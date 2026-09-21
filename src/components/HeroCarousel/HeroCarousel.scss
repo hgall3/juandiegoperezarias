@@ -1,0 +1,302 @@
+@use '../../styles/variables' as v;
+
+// The one place on the site where type sits on a photograph instead of on paper.
+// Its foreground is the page's ground colour, used inverted by context, so the
+// hero still speaks in the project's tokens rather than in literal white.
+.hero {
+  --hero-fg: var(--color-bg);
+  --hero-ink: var(--color-heading);
+
+  position: relative;
+  // Full-bleed: the hero escapes the .page wrapper's max-width.
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  // Behind the photo, so nothing flashes paper-white before it decodes.
+  background: #000;
+
+  @media (min-width: v.$bp-sm) {
+    height: clamp(560px, 78vh, 820px);
+  }
+
+  // Taller than the frame and pulled up, leaving 12% hidden above and below for
+  // the parallax to travel into.
+  &__frame {
+    position: absolute;
+    inset: -12% 0 0;
+    height: 124%;
+    will-change: transform;
+  }
+
+  &__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+
+    &.is-active {
+      opacity: 1;
+    }
+  }
+
+  &__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    // Mobile-first, so the per-slide crop is the default and the wide layout
+    // overrides it: on a phone the frame is tall and a 3:2 photo loses most of
+    // its width, which can push the subject off screen.
+    object-position: var(--slide-focus, 50%) center;
+    user-select: none;
+
+    @media (min-width: v.$bp-sm) {
+      object-position: center;
+    }
+  }
+
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgb(0 0 0 / 82%) 0%,
+      rgb(0 0 0 / 10%) 55%,
+      rgb(0 0 0 / 20%) 100%
+    );
+  }
+
+  // ---- Caption ------------------------------------------------------------
+
+  &__caption {
+    position: absolute;
+    right: 22px;
+    bottom: 26px;
+    left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 680px;
+    // Room beneath for the controls. On a phone the button and the progress
+    // bars cannot share a row — a 320px screen has about 276px of usable width
+    // and the two together want closer to 400 — so the caption clears them and
+    // they sit below it.
+    padding-bottom: 54px;
+    color: var(--hero-fg);
+    animation: hero-enter 0.9s ease both;
+
+    @media (min-width: v.$bp-sm) {
+      right: 56px;
+      bottom: 44px;
+      left: 56px;
+      // Wide enough to share the row, where they belong side by side.
+      padding-bottom: 0;
+    }
+  }
+
+  &__breadcrumb {
+    font-size: 0.59375rem; // 9.5px
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  // Playfair, like every other h1 on the site — the base rule supplies the
+  // family; only the display size and weight are the hero's own.
+  &__title {
+    font-size: clamp(2.75rem, 7vw, 4.75rem); // 44px → 76px
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    color: inherit;
+    text-wrap: balance;
+  }
+
+  &__subtitle {
+    max-width: 520px;
+    font-size: 0.9375rem; // 15px
+    font-weight: 300;
+    line-height: 1.6;
+    opacity: 0.8;
+    text-wrap: pretty;
+
+    @media (min-width: v.$bp-sm) {
+      font-size: 1.0625rem; // 17px
+    }
+  }
+
+  // Glass rather than a plate: the photograph reads through it, so the call to
+  // action sits in the image instead of on top of it. Text stays the hero's
+  // foreground — ink would lose against whatever is behind the button.
+  &__button {
+    --button-bg: color-mix(in srgb, var(--hero-fg) 16%, transparent);
+    --button-fg: var(--hero-fg);
+    --button-bg-hover: color-mix(in srgb, var(--hero-fg) 30%, transparent);
+
+    align-self: flex-start;
+    // 44px stays: this is the primary touch target on a phone, and below that
+    // size it starts getting mis-tapped. It reads smaller through lighter type,
+    // tighter padding and the glass.
+    min-height: 44px;
+    padding: 12px 22px;
+    margin-top: 6px;
+    font-size: 0.5625rem; // 9px
+    border: 1px solid color-mix(in srgb, var(--hero-fg) 40%, transparent);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    @media (min-width: v.$bp-sm) {
+      // No finger, so no minimum.
+      min-height: 40px;
+      padding: 12px 26px;
+    }
+  }
+
+  // ---- Controls -----------------------------------------------------------
+
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    // A 44px transparent hit area around a 26px glyph: the target is finger
+    // sized while the mark stays small.
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--hero-fg);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    transform: translateY(-50%);
+    opacity: 0.7;
+    transition:
+      opacity 0.25s,
+      translate 0.25s;
+
+    svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    @media (min-width: v.$bp-sm) {
+      display: flex;
+    }
+  }
+
+  &__arrow--prev {
+    left: 24px;
+
+    &:hover {
+      translate: -3px 0;
+    }
+  }
+
+  &__arrow--next {
+    right: 24px;
+
+    &:hover {
+      translate: 3px 0;
+    }
+  }
+
+  &__controls {
+    position: absolute;
+    right: 22px;
+    bottom: 26px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--hero-fg);
+
+    @media (min-width: v.$bp-sm) {
+      right: 56px;
+      bottom: 44px;
+      gap: 14px;
+    }
+  }
+
+  &__bars {
+    display: flex;
+    gap: 5px;
+
+    @media (min-width: v.$bp-sm) {
+      gap: 8px;
+    }
+  }
+
+  // The bar is 2px tall; the button around it is 44px, so it can be tapped.
+  &__bar {
+    display: flex;
+    align-items: center;
+    // The visible mark shrinks on a phone; the 44px height it is wrapped in
+    // does not, so it stays tappable.
+    width: 12px;
+    height: 44px;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+    border: 0;
+
+    &::after {
+      width: 100%;
+      height: 2px;
+      content: '';
+      background: var(--hero-fg);
+      opacity: 0.42;
+      transition: opacity 0.35s;
+    }
+
+    &.is-active::after {
+      opacity: 1;
+    }
+
+    @media (min-width: v.$bp-sm) {
+      width: 22px;
+    }
+  }
+
+  &__counter {
+    font-size: 0.5rem; // 8px
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    opacity: 0.6;
+
+    @media (min-width: v.$bp-sm) {
+      font-size: 0.59375rem; // 9.5px
+      letter-spacing: 0.18em;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--hero-fg);
+    outline-offset: 3px;
+  }
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+// No drift, no cross-fade, no entrance — the slide simply changes.
+@media (prefers-reduced-motion: reduce) {
+  .hero__slide,
+  .hero__caption,
+  .hero__arrow {
+    transition: none;
+    animation: none;
+  }
+}

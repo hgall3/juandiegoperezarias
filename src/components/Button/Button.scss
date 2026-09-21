@@ -1,0 +1,38 @@
+@use '../../styles/variables' as v;
+
+// Square, not rounded: nothing on this site has a radius.
+//
+// The two colours are custom properties with defaults rather than fixed values,
+// so a caller can invert the button without a variant class or a second rule —
+// the hero sits on a photograph and swaps them. Everything else about the button
+// stays defined in one place.
+.button {
+  --button-bg: var(--color-heading);
+  --button-fg: var(--color-bg);
+  // A separate property rather than a fixed mix of the one above: a solid
+  // button should soften on hover, but a translucent one has to firm up. Only
+  // the caller knows which it is.
+  --button-bg-hover: color-mix(in srgb, var(--button-bg) 88%, transparent);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  // 44px is the smallest reliable touch target.
+  min-height: 44px;
+  padding: 16px 30px;
+  font-family: v.$font-body;
+  font-size: 0.625rem; // 10px
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--button-fg);
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: var(--button-bg);
+  border: 0;
+  transition: background 0.25s;
+
+  &:hover {
+    background: var(--button-bg-hover);
+  }
+}

@@ -142,6 +142,15 @@
 
   // Full width beneath the bar rather than a floating card.
   &__panel {
+    // Out of flow, hanging off the bottom edge of the bar. In normal flow the
+    // panel added its own height to the header, which pushed the whole page —
+    // the hero included — down as it opened. Absolute, it covers what is
+    // beneath it and nothing moves. The header is `sticky`, which is a
+    // positioned element, so this anchors to it without needing anything else.
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
     padding: 30px v.$space 32px;
 
     @include surface;
@@ -211,20 +220,23 @@
     gap: v.$space;
     padding: 16px v.$space 32px;
     overflow-y: auto;
-    // The same ground and ink as the page. The panel covers the whole screen, so
-    // anything else would read as a different site for as long as it is open.
-    color: var(--color-heading);
-    background: var(--color-bg);
+    // Always black, by its own tokens rather than by reversing the page's — see
+    // _theme.scss. The menu covers the whole screen and is meant to read as its
+    // own dark moment, not as a lit page.
+    color: var(--color-overlay-ink);
+    background: var(--color-overlay);
 
     @media (min-width: v.$bp-sm) {
       display: none;
     }
 
-    // Panel type is set for a dense dropdown; on a full screen it has to be
-    // readable and tappable instead.
+    // Entries carry the page's ink for the dropdown, which sits on paper; here
+    // they take the menu's instead. Their type is set for a dense dropdown too,
+    // and on a full screen it has to be readable and tappable.
     .navbar__item {
       padding: 2px 0;
       font-size: 1.125rem;
+      color: inherit;
       text-align: center;
     }
 
@@ -250,8 +262,10 @@
   }
 
   &__accordion {
+    // Drawn in the menu's own ink: a rule mixed from the page's would be black
+    // on black.
     border-bottom: 1px solid
-      color-mix(in srgb, var(--color-heading) 15%, transparent);
+      color-mix(in srgb, var(--color-overlay-ink) 15%, transparent);
   }
 
   &__accordion-trigger {

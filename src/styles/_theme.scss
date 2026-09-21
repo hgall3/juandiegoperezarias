@@ -23,6 +23,14 @@
   // as a warm accent, not as a signal.
   --color-accent: #8f4a45;
 
+  // The full-screen mobile menu's ground and ink. Deliberately their own tokens
+  // rather than --color-heading and --color-bg used back to front: the menu is
+  // meant to be black whatever the rest of the site is doing, and swapping the
+  // page's two tokens would quietly flip it to white if a light/dark toggle were
+  // ever added.
+  --color-overlay: #08060d;
+  --color-overlay-ink: #fff;
+
   // A single value, not `light dark`: the pair invites the browser to darken
   // scrollbars and form controls to match the OS, which is the same automatic
   // behaviour by another route.
