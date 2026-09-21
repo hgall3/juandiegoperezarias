@@ -54,6 +54,22 @@ A component reaches the Sass variables by relative path —
 
 Use the existing tokens rather than hardcoding colors or spacing.
 
+A design reference — a screenshot, a mock-up, a spec from a design tool — gives
+**layout**: what sits beside what, the order of the blocks, where a divider
+falls. Its colours and type sizes are not ours. Sampling a background out of a
+picture, or matching a font size it happens to use, is how a value that belongs
+to no token ends up in the codebase. Map everything onto `_theme.scss`,
+`_variables.scss` and the scale in `_typography.scss`, and prefer reusing an
+existing rule — the `.text-small` class, the base body size — over restating a
+size in a component at all.
+
+The scheme is the default and needs no discussion. A colour in a reference that
+is *close to* one we have — a cream beside `--color-bg`, a warm grey beside
+`--color-text` — is simply that token; use it and move on. A colour genuinely
+outside the scheme — a pink, a blue, something no token approximates — is a
+question to ask: **which new token are we adding, and what is it for?** Adding
+one unasked is the mistake, not noticing the difference.
+
 Typography is set globally in `_typography.scss` — Playfair Display for `h1`–`h3`,
 Work Sans for `h4`–`h6` and body copy. **Font sizes** are `rem`, because a `px`
 font size ignores a reader who has raised their browser's default for legibility.
