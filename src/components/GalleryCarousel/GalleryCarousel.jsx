@@ -18,6 +18,11 @@ const EDGE_TOLERANCE = 2
 const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// A finger rather than a pointer. Asked at the moment of the tap rather than
+// stored, so a device that has both — a laptop with a touchscreen — answers for
+// the input actually being used.
+const isCoarsePointer = () => window.matchMedia('(hover: none)').matches
+
 // A bare chevron, matching the hero's: no plate, no border, no background. The
 // whole affordance is the glyph itself. Kept local for the same reason the
 // hero keeps its own — it is a render helper, not a piece of shared UI.
@@ -47,6 +52,9 @@ function GalleryCarousel() {
   const [atEnd, setAtEnd] = useState(false)
   const [active, setActive] = useState(0)
   const [dragging, setDragging] = useState(false)
+  // On a touch screen there is no hover to reveal a card with, so a press does
+  // it instead. Holds the slug of the one card currently open, or null.
+  const [openCard, setOpenCard] = useState(null)
 
   // Live drag state. A ref rather than state on purpose: it changes on every
   // pointermove, and re-rendering the whole row at that rate would make the
@@ -103,6 +111,10 @@ function GalleryCarousel() {
       frame = requestAnimationFrame(() => {
         frame = 0
         measure()
+        // Moving the row closes whatever a press had opened. Returning the same
+        // value when there is nothing open lets React skip the render, so this
+        // costs nothing on the scrolls where it does not apply.
+        setOpenCard((current) => (current === null ? current : null))
       })
     }
 
@@ -204,13 +216,34 @@ function GalleryCarousel() {
     }
   }
 
-  // Capture phase, so the card's own link never sees the click.
+  // Capture phase, so the card's own link never sees a click this stops.
   const onClickCapture = (event) => {
-    if (!suppressClick.current) return
+    // A drag that travelled is never a click, whatever it landed on.
+    if (suppressClick.current) {
+      suppressClick.current = false
+      event.preventDefault()
+      event.stopPropagation()
+      return
+    }
 
-    suppressClick.current = false
+    // With a pointer, hover has already shown what the card says and the click
+    // means what it looks like it means.
+    if (!isCoarsePointer()) return
+
+    const card = event.target.closest('.gallery-card')
+    if (!card) return
+
+    // The card is already open, so this tap is the one that follows the link —
+    // including a tap on Ver más, which is the target the open state exists to
+    // offer. Let it through untouched.
+    if (card.dataset.slug === openCard) return
+
+    // The first tap reveals rather than navigates. Without this a finger could
+    // never read a card before opening it, since the photograph alone says
+    // nothing about where it leads.
     event.preventDefault()
     event.stopPropagation()
+    setOpenCard(card.dataset.slug)
   }
 
   // ---- Keyboard -----------------------------------------------------------
@@ -307,7 +340,10 @@ function GalleryCarousel() {
           <Link
             key={card.slug}
             to={card.href}
-            className="gallery-card"
+            data-slug={card.slug}
+            className={`gallery-card${
+              card.slug === openCard ? ' is-open' : ''
+            }`}
             draggable="false"
           >
             <img

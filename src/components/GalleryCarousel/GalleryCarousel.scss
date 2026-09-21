@@ -314,6 +314,73 @@
   }
 }
 
+// Where there is no pointer to hover with, a press does the revealing instead.
+// The first tap brings the name and the call to action into the middle of the
+// photograph and goes no further; the next one follows the link. That is what
+// turns Ver más into something a thumb can actually aim at, rather than a label
+// that happens to sit under one — and it means a photograph can be read before
+// it is opened, which on a phone it otherwise never could be.
+//
+// Scrolling the row closes it again, handled in the component.
+@media (hover: none) {
+  .gallery-card {
+    &__scrim {
+      opacity: 0;
+      // Flatter and more even than the pointer version: this one sits behind
+      // words in the middle of the card rather than along its foot, so it has
+      // to carry them everywhere instead of weighting one edge.
+      background: linear-gradient(
+        to top,
+        rgb(0 0 0 / 72%) 0%,
+        rgb(0 0 0 / 58%) 50%,
+        rgb(0 0 0 / 46%) 100%
+      );
+      transition: opacity 0.45s v.$ease-reveal;
+    }
+
+    // Centred rather than anchored to the foot. With the whole card dimmed
+    // behind it there is nothing left to keep out of the way of, and the middle
+    // is where the thumb that opened it already is.
+    &__caption {
+      inset: 0;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      opacity: 0;
+      translate: 0 10px;
+      transition:
+        opacity 0.45s v.$ease-reveal,
+        translate 0.45s v.$ease-reveal;
+    }
+
+    // A target, not a caption. The outline and the 44px minimum are what say it
+    // can be pressed. On a pointer device the same words stay bare, because
+    // there the whole card is already the target and a second one would only
+    // compete with it.
+    &__cta {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 12px 22px;
+      border: 1px solid color-mix(in srgb, var(--color-bg) 55%, transparent);
+      opacity: 1;
+    }
+
+    &.is-open {
+      .gallery-card__scrim {
+        opacity: 1;
+      }
+
+      .gallery-card__caption {
+        opacity: 1;
+        translate: 0 0;
+      }
+    }
+  }
+}
+
 // ---- Mobile cue -----------------------------------------------------------
 
 .gallery {
@@ -382,6 +449,7 @@
     scale: 1;
   }
 
+  .gallery-card__caption,
   .gallery-card__title,
   .gallery-card__cta {
     translate: none;
