@@ -1,6 +1,8 @@
 import { usePageMeta } from '../../hooks/usePageMeta.jsx'
 import HeroCarousel from '../../components/HeroCarousel/HeroCarousel.jsx'
+import Feature from '../../components/Feature/Feature.jsx'
 import { heroSlides } from '../../content/heroSlides.jsx'
+import { features } from '../../content/features.jsx'
 import './Home.scss'
 
 function Home() {
@@ -16,7 +18,14 @@ function Home() {
     <>
       <HeroCarousel slides={heroSlides} />
 
-      <section className="page home">{/* Featured work */}</section>
+      {/* The bands alternate by position: odd ones face the other way, so a
+          second entry in the array lands its photograph on the left without
+          anyone having to say so. */}
+      <section className="page home">
+        {features.map((item, index) => (
+          <Feature key={item.id} item={item} reversed={index % 2 === 1} />
+        ))}
+      </section>
     </>
   )
 }
