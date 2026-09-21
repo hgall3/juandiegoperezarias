@@ -149,8 +149,23 @@
 
   // Shared by the copyright line and the two legal labels, so they read as one
   // row rather than two kinds of small print.
+  // One line, always. The copyright is 61 characters, so at a fixed size it
+  // wraps on a narrow phone and fits on a wide one — the size has to follow the
+  // screen instead. clamp() holds it between 7px and the 10px the .text-xs step
+  // gives it, taking 2.1% of the window in between; nowrap makes the break
+  // impossible rather than merely unlikely.
+  //
+  // The tracking is what made it wrap as much as the size did, so it is nearly
+  // closed up here and only opens out at $bp-md, where there is room for it.
   &__legal {
+    font-size: clamp(0.4375rem, 2.1vw, 0.625rem);
+    letter-spacing: 0.02em;
     text-transform: uppercase;
+    white-space: nowrap;
     opacity: 0.7;
+
+    @media (min-width: v.$bp-md) {
+      letter-spacing: 0.14em;
+    }
   }
 }
