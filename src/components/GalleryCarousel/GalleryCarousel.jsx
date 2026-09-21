@@ -231,16 +231,30 @@ function GalleryCarousel() {
     if (!isCoarsePointer()) return
 
     const card = event.target.closest('.gallery-card')
-    if (!card) return
 
-    // The card is already open, so this tap is the one that follows the link —
-    // including a tap on Ver más, which is the target the open state exists to
-    // offer. Let it through untouched.
-    if (card.dataset.slug === openCard) return
+    // A tap that missed the cards altogether puts the open one away.
+    if (!card) {
+      setOpenCard(null)
+      return
+    }
 
-    // The first tap reveals rather than navigates. Without this a finger could
-    // never read a card before opening it, since the photograph alone says
-    // nothing about where it leads.
+    if (card.dataset.slug === openCard) {
+      // Open: Ver más is the only thing that follows the link. It is the one
+      // part of the card drawn as a target, so it should be the one part that
+      // behaves like one.
+      if (event.target.closest('.gallery-card__cta')) return
+
+      // Anywhere else on an open card is a way back out — the photograph
+      // returns to the row rather than navigating somewhere unasked.
+      event.preventDefault()
+      event.stopPropagation()
+      setOpenCard(null)
+      return
+    }
+
+    // Closed: the tap reveals rather than navigates. Without this a finger
+    // could never read a card before opening it, since the photograph alone
+    // says nothing about where it leads.
     event.preventDefault()
     event.stopPropagation()
     setOpenCard(card.dataset.slug)

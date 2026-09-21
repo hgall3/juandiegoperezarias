@@ -25,8 +25,9 @@ import iglesiaSanFrancisco750 from '../assets/gallery/iglesia-san-francisco-750.
 // place — rename it there and the navbar menu and these cards change together.
 // Written twice, the two would drift apart the first time one was corrected.
 //
-// Several photographs can share a category; the order below is the order they
-// appear in the row, grouped by category in the order `galleries` lists them.
+// Several photographs can share a category. They are grouped by category below
+// because that is the sane way to edit the list, but the row interleaves them —
+// see `interleave`.
 
 const byCategory = Object.fromEntries(
   galleries.map((category) => [category.slug, category]),
@@ -103,7 +104,33 @@ const photographs = [
   },
 ]
 
-export const galleryCards = photographs.map(
+// Grouped for editing, interleaved for display: the row takes one photograph
+// from each category in turn — Paisaje, Gente, Flora y fauna, Quito, then round
+// again — so no two neighbours carry the same label. Two cards reading
+// "Paisaje" side by side look like a mistake in a row whose whole subject is
+// the category names.
+//
+// Derived rather than written out in the desired order, so adding a ninth
+// photograph keeps the interleaving instead of quietly putting a pair back.
+const interleave = (entries) => {
+  const queues = galleries.map((category) =>
+    entries.filter((photo) => photo.category === category.slug),
+  )
+  const rounds = Math.max(0, ...queues.map((queue) => queue.length))
+  const ordered = []
+
+  for (let round = 0; round < rounds; round += 1) {
+    queues.forEach((queue) => {
+      if (queue[round]) ordered.push(queue[round])
+    })
+  }
+
+  // Anything whose category is not in `galleries` would otherwise vanish from
+  // the row without a word. Better it appears at the end and is noticed.
+  return [...ordered, ...entries.filter((photo) => !ordered.includes(photo))]
+}
+
+export const galleryCards = interleave(photographs).map(
   ({ slug, category, small, large, alt }) => ({
     slug,
     title: byCategory[category].title,
