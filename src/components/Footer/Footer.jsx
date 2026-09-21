@@ -21,19 +21,19 @@ const dial = phone.replace(/\s/g, '')
 function Footer() {
   return (
     <footer className="footer">
-      <div className="footer__inner">
-        <div className="footer__top">
+      <div className="footer__top">
+        <div className="footer__inner">
           <section className="footer__block">
             <h2 className="footer__label text-small">Contacto</h2>
 
             <ul className="footer__list">
               <li>
-                <a className="footer__line" href={`mailto:${email}`}>
+                <a className="footer__line text-small" href={`mailto:${email}`}>
                   {email}
                 </a>
               </li>
               <li>
-                <a className="footer__line" href={`tel:${dial}`}>
+                <a className="footer__line text-small" href={`tel:${dial}`}>
                   {phone}
                 </a>
               </li>
@@ -42,9 +42,7 @@ function Footer() {
           </section>
 
           <section className="footer__block footer__block--social">
-            <h2 className="footer__label text-small">Sígueme</h2>
-
-            <ul className="footer__socials">
+            <ul className="footer__socials" aria-label="Redes sociales">
               {socials.map(({ name, url }) => {
                 const Icon = icons[name]
 
@@ -69,18 +67,20 @@ function Footer() {
             </ul>
           </section>
         </div>
+      </div>
 
-        <div className="footer__bottom">
+      <div className="footer__bottom">
+        <div className="footer__inner">
           {/* The year is read from the clock rather than typed, so it can't be
               left showing one that has already passed. */}
-          <p className="footer__legal text-small">
+          <p className="footer__legal text-xs">
             © {new Date().getFullYear()} Juan Diego Perez Arias · Todos los
             derechos reservados
           </p>
 
           <ul className="footer__legal-links">
             {legal.map(({ label }) => (
-              <li key={label} className="footer__legal text-small">
+              <li key={label} className="footer__legal text-xs">
                 {label}
               </li>
             ))}

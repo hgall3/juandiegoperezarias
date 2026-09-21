@@ -108,6 +108,15 @@ small,
   line-height: 1.429; // 20/14
 }
 
+// One step below, for the smallest print on the page: the footer's copyright
+// and legal labels. Nothing that carries meaning on its own should use it.
+// Still rem — a reader who has raised their browser default needs this size
+// to grow more than any other.
+.text-xs {
+  font-size: 0.625rem; // 10px
+  line-height: 1.6; // 16/10
+}
+
 a {
   color: inherit;
 }

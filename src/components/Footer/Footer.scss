@@ -3,46 +3,49 @@
 // Mobile-first: everything stacks, and the two-column row only appears from
 // $bp-md up.
 //
-// The footer sits on the page's own background. The reference showed a cream
-// band, but that colour is not in the scheme, so the separation is a hairline
-// in --color-border instead of a second ground.
+// The footer sits on the page's own background, so the separation from the
+// content above is a hairline in --color-border rather than a second ground.
 //
-// No font sizes are set here. The labels and the small print carry the global
-// .text-small class, and the contact lines inherit the base body size — the
-// reference's serif and its smaller steps would both mean inventing type the
-// scale doesn't have.
+// No font sizes are set in this file. The labels, the contact lines and the
+// small print all carry a global class — .text-small and .text-xs — so the
+// footer follows the type scale instead of keeping a private copy of it.
 .footer {
-  padding: 40px v.$space;
   border-top: 1px solid var(--color-border);
 
-  @media (min-width: v.$bp-md) {
-    padding: 56px v.$space 32px;
-  }
-
-  // Matches the .page wrapper, so the footer's text lines up with the content
-  // above it instead of running to the window edges on a wide screen.
+  // Both dividers run the full width of the window, edge to edge. That is why
+  // the padding and the 1126px cap live on the inner wrapper and not here: on
+  // .footer they would pull the rules in from the sides with the text.
   &__inner {
     max-width: 1126px;
     margin: 0 auto;
+    padding: 0 v.$space;
   }
 
   &__top {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
+    padding: 40px 0;
 
     @media (min-width: v.$bp-md) {
-      flex-direction: row;
-      // Pushed apart rather than spaced by a gap: the two blocks sit at the
-      // outer edges of the column, as in the reference.
-      justify-content: space-between;
+      padding: 56px 0;
+    }
+
+    .footer__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+
+      @media (min-width: v.$bp-md) {
+        flex-direction: row;
+        // Pushed apart rather than spaced by a gap: the two blocks sit at the
+        // outer edges of the column, as in the reference.
+        justify-content: space-between;
+        align-items: flex-start;
+      }
     }
   }
 
-  // The small uppercase labels. They stay <h2> because each one heads a section
-  // for a screen reader, but the global h2 styles are display type meant for a
-  // page title, so the family and weight are reset to the body face here. The
-  // size comes from .text-small in the markup, not from this file.
+  // The "Contacto" label. It stays an <h2> because it heads a section for a
+  // screen reader, but the global h2 styles are display type meant for a page
+  // title, so the family and weight are reset to the body face here.
   //
   // The capitals come from CSS, not the source string: written uppercase in the
   // markup, some screen readers would spell "CONTACTO" out letter by letter.
@@ -59,7 +62,7 @@
   &__list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     list-style: none;
   }
 
@@ -79,6 +82,8 @@
     opacity: 0.8;
   }
 
+  // No heading above these any more, so the list carries the accessible name
+  // instead; without it the icons would be an unlabelled group.
   &__socials {
     display: flex;
     gap: 10px;
@@ -107,19 +112,23 @@
     }
   }
 
+  // The rule above this row spans the whole window; only its text is held to
+  // the 1126px column by .footer__inner.
   &__bottom {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 40px;
-    padding-top: 24px;
     border-top: 1px solid var(--color-border);
 
-    @media (min-width: v.$bp-md) {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 56px;
+    .footer__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+
+      @media (min-width: v.$bp-md) {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
     }
   }
 
