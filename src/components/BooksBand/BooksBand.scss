@@ -173,6 +173,10 @@
 
     @media (min-width: v.$bp-sm) {
       flex-direction: row;
+      // Centres the cover and the words as one pair. Without it the pair sits
+      // at the left of the 900px box and the block reads as off-centre even
+      // though the box itself is centred.
+      justify-content: center;
       gap: 56px;
       margin-bottom: 120px;
       text-align: left;
@@ -223,16 +227,20 @@
   // takes. The global step would be too quiet for the one book the section is
   // built around.
   &__featured-title {
-    font-size: clamp(2.5rem, 5vw, 2.875rem); // 40px → 46px
+    font-size: clamp(2rem, 4vw, 2.375rem); // 32px → 38px
     font-weight: 400;
     line-height: 1.05;
     letter-spacing: -0.02em;
     color: inherit;
   }
 
+  // Deliberately below the site's smallest body step. The whole stack — byline,
+  // title, blurb, call to action — is meant to sit within the height of the
+  // cover beside it, and at the body size it runs well past the bottom of the
+  // photograph of the book it is describing.
   &__blurb {
-    font-size: 0.9375rem; // 15px
-    line-height: 1.65;
+    font-size: 0.625rem; // 10px
+    line-height: 1.7;
     opacity: 0.82;
     text-wrap: pretty;
   }
@@ -282,18 +290,31 @@
     justify-content: center;
     margin: 0 auto;
 
-    // Three across. `auto` columns rather than equal fractions so each sizes to
-    // its own content — that is what lands the middle book on the page's
-    // centre line and pushes the outer two well clear of it.
+    // 1fr auto 1fr, not three content-sized columns. Only the middle track is
+    // sized to its book; the two beside it are equal, which is what puts the
+    // middle book exactly on the page's centre line however much or little the
+    // other two contain. Three auto columns centre the row as a whole, and the
+    // middle book then sits wherever the differing widths leave it.
     //
     // The gap is fluid because the row needs roughly 1100px to hold 120px
-    // gutters, which is between the project's breakpoints. Rather than add a
+    // gutters, which falls between the project's breakpoints. Rather than add a
     // fourth breakpoint for one component, it opens from a workable 48px at
     // $bp-md to the full 120px once there is room.
     @media (min-width: v.$bp-md) {
-      grid-template-columns: repeat(3, auto);
-      justify-items: start;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: start;
       gap: clamp(48px, 6vw, 120px);
+
+      // The outer two hug the middle rather than drifting out to the window's
+      // edges: the first ends where its track ends, the third begins where its
+      // track begins, so they grow away from the centre by the same amount.
+      .book:first-child {
+        justify-self: end;
+      }
+
+      .book:last-child {
+        justify-self: start;
+      }
     }
   }
 }
@@ -341,16 +362,30 @@
   // Below the global h3 step on purpose. These sit beside a 74px cover, and at
   // 28px the title would overpower the thing it names.
   &__title {
-    font-size: 1.1875rem; // 19px
+    font-size: 1rem; // 16px
     font-weight: 400;
-    line-height: 1.25;
+    line-height: 1.3;
     color: inherit;
   }
 
-  // Carries .text-small, so the size comes from the global scale rather than
-  // from here.
   &__subtitle {
+    font-size: 0.75rem; // 12px
+    line-height: 1.5;
     opacity: 0.68;
+  }
+
+  // Smaller than the featured book's. That one is the section's primary
+  // action; these three are secondary, and sit beside a 74px cover.
+  .books__cta {
+    min-height: 34px;
+    padding: 9px 16px;
+    font-size: 0.5625rem; // 9px
+    letter-spacing: 0.18em;
+
+    // A finger still needs a full-sized target, whatever the label is doing.
+    @media (hover: none) {
+      min-height: 44px;
+    }
   }
 }
 

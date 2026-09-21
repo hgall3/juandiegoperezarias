@@ -72,7 +72,8 @@ export const books = [
   },
   {
     slug: 'sapos-mariposas-y-orquideas',
-    title: 'Sapos mariposas y orquídeas en la línea equinoccial',
+    title: 'Sapos mariposas y orquídeas',
+    subtitle: 'En la línea equinoccial',
   },
   {
     slug: 'amnesia',

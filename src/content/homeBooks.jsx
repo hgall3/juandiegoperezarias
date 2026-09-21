@@ -10,9 +10,9 @@ import saposCover from '../assets/books/sapos-mariposas-orquideas-600.jpg'
 //
 // Titles and subtitles are not written here. Each entry names a book by slug
 // and the words come from `books` in collections.jsx, the same list the navbar
-// menu reads, so correcting a title in one place corrects it everywhere. Note
-// that the fourth book genuinely has no subtitle — its whole name is one long
-// line — so whatever renders these has to cope with that rather than assume one.
+// menu reads, so correcting a title in one place corrects it everywhere. Not
+// every book in that list carries a subtitle, so whatever renders these has to
+// cope with one being absent rather than assume there is always one.
 
 const bySlug = Object.fromEntries(books.map((book) => [book.slug, book]))
 

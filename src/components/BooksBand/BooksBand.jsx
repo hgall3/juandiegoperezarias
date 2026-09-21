@@ -170,11 +170,12 @@ function BooksBand() {
               <div className="book__text">
                 <h3 className="book__title">{book.title}</h3>
 
-                {/* Not every book has one: the fourth's whole name is a single
-                    long line, so this renders nothing rather than an empty
-                    element that would still take its share of the gap. */}
+                {/* Guarded because `books` is a shared list and not every
+                    entry in it carries a subtitle. Rendering nothing beats an
+                    empty element, which would still take its share of the gap
+                    and leave the title floating. */}
                 {book.subtitle && (
-                  <p className="book__subtitle text-small">{book.subtitle}</p>
+                  <p className="book__subtitle">{book.subtitle}</p>
                 )}
 
                 <Link to={book.href} className="books__cta">
