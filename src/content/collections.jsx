@@ -51,19 +51,43 @@ export const stories = [
 // Subtitles are the half after the first dash in the titles Juan Diego supplied.
 // Only the first dash separates: "1934-1980" belongs to a subtitle rather than
 // being another split point.
+// Slugs, like the gallery categories, are the unaccented hyphenated form each
+// book's own page will use, and what homeBooks.jsx pairs a cover with — so a
+// title is written here and nowhere else.
 export const books = [
-  { title: 'Miradas', subtitle: 'Por los caminos de un país oculto' },
-  { title: 'Los restos de viaje', subtitle: 'Días de cámara' },
-  { title: 'Sobre vivir', subtitle: 'Huella nefasta de Texaco en Ecuador' },
-  { title: 'Sapos mariposas y orquídeas en la línea equinoccial' },
   {
+    slug: 'miradas',
+    title: 'Miradas',
+    subtitle: 'Por los caminos de un país oculto',
+  },
+  {
+    slug: 'los-restos-de-viaje',
+    title: 'Los restos de viaje',
+    subtitle: 'Días de cámara',
+  },
+  {
+    slug: 'sobre-vivir',
+    title: 'Sobre vivir',
+    subtitle: 'Huella nefasta de Texaco en Ecuador',
+  },
+  {
+    slug: 'sapos-mariposas-y-orquideas',
+    title: 'Sapos mariposas y orquídeas en la línea equinoccial',
+  },
+  {
+    slug: 'amnesia',
     title: 'Amnesia',
     subtitle:
       'Tras las huellas de unos fotógrafos olvidados… En busca de un país perdido',
   },
   {
+    slug: 'la-mirada-silenciosa',
     title: 'La mirada silenciosa',
     subtitle: 'Gottfried Hirtz fotografías 1934-1980',
   },
-  { title: 'El río de las palabras', subtitle: 'Días de cámara' },
+  {
+    slug: 'el-rio-de-las-palabras',
+    title: 'El río de las palabras',
+    subtitle: 'Días de cámara',
+  },
 ]

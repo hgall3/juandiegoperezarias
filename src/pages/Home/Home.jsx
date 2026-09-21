@@ -2,6 +2,7 @@ import { usePageMeta } from '../../hooks/usePageMeta.jsx'
 import HeroCarousel from '../../components/HeroCarousel/HeroCarousel.jsx'
 import Feature from '../../components/Feature/Feature.jsx'
 import GalleryCarousel from '../../components/GalleryCarousel/GalleryCarousel.jsx'
+import BooksBand from '../../components/BooksBand/BooksBand.jsx'
 import { heroSlides } from '../../content/heroSlides.jsx'
 import { features } from '../../content/features.jsx'
 import './Home.scss'
@@ -32,6 +33,11 @@ function Home() {
             row is full-bleed: the cards have to run off the right edge. */}
         <GalleryCarousel />
       </section>
+
+      {/* Outside .home, which pads its contents: this band sets its own
+          generous padding and has to run edge to edge so the black it ends in
+          meets whatever follows with no paper-coloured strip between them. */}
+      <BooksBand />
     </>
   )
 }
