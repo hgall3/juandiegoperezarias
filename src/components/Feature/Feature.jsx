@@ -26,7 +26,7 @@ function Feature({ item, reversed = false }) {
           paint. width and height are the file's own, which reserves the right
           space before it arrives and stops the text jumping. */}
       <img
-        className="feature__image"
+        className="feature__image reveal"
         src={src}
         srcSet={srcSet}
         sizes="(min-width: 1024px) 57vw, 100vw"
@@ -37,7 +37,7 @@ function Feature({ item, reversed = false }) {
         decoding="async"
       />
 
-      <div className="feature__text">
+      <div className="feature__text reveal reveal--delayed">
         <p className="feature__breadcrumb">{breadcrumb}</p>
 
         <h2 className="feature__title" id={`feature-${item.id}`}>
