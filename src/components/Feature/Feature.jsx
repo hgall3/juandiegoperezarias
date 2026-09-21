@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useReveal } from '../../hooks/useReveal.jsx'
 import './Feature.scss'
 
 // One featured band: a photograph beside a piece of writing.
@@ -9,10 +10,16 @@ import './Feature.scss'
 // reading order the same for a screen reader whichever way the band faces.
 function Feature({ item, reversed = false }) {
   const { src, srcSet, alt, breadcrumb, title, text, action } = item
+  // The band rises into place the first time it is scrolled to. The class is
+  // all this adds — the movement is in Feature.scss.
+  const [ref, revealed] = useReveal()
 
   return (
     <section
-      className={`feature${reversed ? ' feature--reversed' : ''}`}
+      ref={ref}
+      className={`feature${reversed ? ' feature--reversed' : ''}${
+        revealed ? ' is-revealed' : ''
+      }`}
       aria-labelledby={`feature-${item.id}`}
     >
       {/* Below the fold on every screen, so it is never part of the first
