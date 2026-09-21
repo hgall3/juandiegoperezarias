@@ -1,6 +1,7 @@
 import { usePageMeta } from '../../hooks/usePageMeta.jsx'
 import HeroCarousel from '../../components/HeroCarousel/HeroCarousel.jsx'
 import Feature from '../../components/Feature/Feature.jsx'
+import GalleryCarousel from '../../components/GalleryCarousel/GalleryCarousel.jsx'
 import { heroSlides } from '../../content/heroSlides.jsx'
 import { features } from '../../content/features.jsx'
 import './Home.scss'
@@ -26,6 +27,10 @@ function Home() {
         {features.map((item, index) => (
           <Feature key={item.id} item={item} reversed={index % 2 === 1} />
         ))}
+
+        {/* Inside .home so it inherits the spacing between bands, but its own
+            row is full-bleed: the cards have to run off the right edge. */}
+        <GalleryCarousel />
       </section>
     </>
   )

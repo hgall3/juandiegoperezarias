@@ -1,0 +1,340 @@
+@use '../../styles/variables' as v;
+
+// The homepage gallery: a row of category cards dragged or swiped through.
+//
+// Full-bleed, like the featured bands and for the same reason — the row has to
+// run off the right edge of the window. A partial card showing at that edge is
+// the whole affordance: it is what says the row continues, so the section is
+// NOT wrapped in .page, whose max-width and centring would tidy the cut-off
+// card away and with it the only sign that there is more to see.
+.gallery {
+  // The inset that the heading, the arrows and the first card all line up on.
+  // None of these numbers are new: they are the hero caption's gutter at each
+  // width, and the featured band's text inset on a desktop, so the row starts
+  // where the rest of the page already starts.
+  --gallery-gutter: #{v.$space};
+  --gallery-gap: 16px;
+
+  @media (min-width: v.$bp-sm) {
+    --gallery-gutter: 56px;
+    --gallery-gap: 24px;
+  }
+
+  @media (min-width: v.$bp-md) {
+    --gallery-gutter: 96px;
+  }
+
+  // ---- Heading row --------------------------------------------------------
+
+  &__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: v.$space;
+    padding: 0 var(--gallery-gutter);
+    margin-bottom: 28px;
+
+    @media (min-width: v.$bp-sm) {
+      margin-bottom: 36px;
+    }
+  }
+
+  // The size is the global h2's; nothing about the type is this component's own.
+  &__heading {
+    margin: 0;
+  }
+
+  &__arrows {
+    display: none;
+    // Enough of a gap that the two glyphs read as separate targets rather than
+    // one wide control.
+    gap: 4px;
+
+    // Swiping carries navigation on a phone, where a 44px target beside the
+    // heading would also be competing for a narrow line.
+    @media (min-width: v.$bp-sm) {
+      display: flex;
+    }
+  }
+
+  // Bare glyph, no plate and no filled circle — the same treatment as the
+  // hero's arrows, so the two read as one family. A 44px transparent hit area
+  // around a 22px mark keeps the target finger-sized while the mark stays small.
+  &__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--color-heading);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    opacity: 0.75;
+    transition:
+      opacity 0.25s,
+      translate 0.25s;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    &:hover:not(:disabled) {
+      opacity: 1;
+    }
+
+    // Inert at the ends, and visibly so. Not display: none — an arrow that
+    // vanished would shift the other one along the line every time the row
+    // reached an end.
+    &:disabled {
+      cursor: default;
+      opacity: 0.25;
+    }
+
+    &:first-child:hover:not(:disabled) {
+      translate: -3px 0;
+    }
+
+    &:last-child:hover:not(:disabled) {
+      translate: 3px 0;
+    }
+  }
+
+  // ---- Track --------------------------------------------------------------
+
+  &__track {
+    display: flex;
+    gap: var(--gallery-gap);
+    // The left inset lines the first card up with the heading. There is
+    // deliberately no matching inset on the right: the row is meant to run off
+    // that edge.
+    padding: 0 0 0 var(--gallery-gutter);
+    overflow-x: auto;
+    overflow-y: hidden;
+    // Proximity rather than mandatory, so a free drag can come to rest between
+    // two cards instead of being yanked to the nearest one.
+    scroll-snap-type: x proximity;
+    // Snapping lands a card on the gutter rather than flush against the window.
+    scroll-padding-inline-start: var(--gallery-gutter);
+    cursor: grab;
+
+    // Scrollable, but without the bar: on the platforms that show one
+    // permanently it would sit under the photographs as a grey slab.
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &.is-dragging {
+      cursor: grabbing;
+      // Snapping fights a drag in progress — it keeps trying to settle while
+      // the hand is still moving. It comes back the moment the pointer lifts.
+      scroll-snap-type: none;
+      // A drag over photographs would otherwise start a native image drag or
+      // select the captions.
+      user-select: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-heading);
+      outline-offset: 4px;
+    }
+  }
+}
+
+// ---- Card -----------------------------------------------------------------
+
+// One category: a photograph with its name over it. The whole tile is the link
+// — there is no separate button, so the target is as large as the card.
+.gallery-card {
+  position: relative;
+  // Never shrinks. Without this, flex would compress the cards to fit the
+  // window and there would be nothing to scroll.
+  flex: none;
+  width: 78vw;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  text-decoration: none;
+  scroll-snap-align: start;
+
+  @media (min-width: v.$bp-sm) {
+    width: 300px;
+  }
+
+  @media (min-width: v.$bp-md) {
+    width: 340px;
+  }
+
+  @media (min-width: v.$bp-lg) {
+    width: 380px;
+  }
+
+  &__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    // The photograph is the thing being dragged, so it must not start a drag of
+    // its own.
+    -webkit-user-drag: none;
+    user-select: none;
+    transition: scale 0.7s v.$ease-reveal;
+  }
+
+  // Bottom-weighted, so the name reads against a pale sky or a white wall
+  // without the type itself having to change colour.
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgb(0 0 0 / 78%) 0%,
+      rgb(0 0 0 / 30%) 38%,
+      rgb(0 0 0 / 0%) 68%
+    );
+    transition: background 0.7s v.$ease-reveal;
+  }
+
+  &__caption {
+    position: absolute;
+    right: 20px;
+    bottom: 18px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+    // Like the hero, the type here sits on a photograph, so its colour is the
+    // page's ground used inverted by context rather than a literal white.
+    color: var(--color-bg);
+  }
+
+  // Playfair, like every other h-level line on the site — the global rules
+  // supply the family and the size; only the colour is the card's own.
+  &__title {
+    font-family: v.$font-heading;
+    font-size: 1.5rem; // 24px
+    line-height: 1.1;
+    color: inherit;
+  }
+
+  // The same uppercase label the featured bands use for their link.
+  &__cta {
+    font-size: 0.625rem; // 10px
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-heading);
+    outline-offset: 3px;
+  }
+}
+
+// Where there is a pointer, the card holds itself back until it is pointed at.
+// Everything below is inside this query on purpose: a touch screen reports
+// hover as a state it can never leave, so a card tapped on a phone would keep
+// its hover treatment until something else was tapped.
+@media (hover: hover) {
+  .gallery-card {
+    &__cta {
+      opacity: 0;
+      translate: 0 6px;
+      transition:
+        opacity 0.7s v.$ease-reveal,
+        translate 0.7s v.$ease-reveal;
+    }
+
+    &:hover,
+    &:focus-visible {
+      .gallery-card__photo {
+        scale: 1.03;
+      }
+
+      // Deepened across the whole card rather than only at the foot, so the
+      // photograph recedes and the words come forward.
+      .gallery-card__scrim {
+        background: linear-gradient(
+          to top,
+          rgb(0 0 0 / 84%) 0%,
+          rgb(0 0 0 / 52%) 50%,
+          rgb(0 0 0 / 34%) 100%
+        );
+      }
+
+      .gallery-card__cta {
+        opacity: 0.85;
+        translate: 0 0;
+      }
+    }
+  }
+}
+
+// ---- Mobile cue -----------------------------------------------------------
+
+.gallery {
+  &__cue {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: v.$space;
+    padding: 18px var(--gallery-gutter) 0;
+
+    // Once the arrows are there, the row's state is already being reported.
+    @media (min-width: v.$bp-sm) {
+      display: none;
+    }
+  }
+
+  // De-emphasis as opacity on the ink colour rather than a grey of its own, so
+  // it follows the text colour instead of being pinned to a value the tokens
+  // know nothing about.
+  &__hint {
+    font-size: 0.625rem; // 10px
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  &__dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  &__dot {
+    width: 5px;
+    height: 5px;
+    background: var(--color-heading);
+    border-radius: 50%;
+    opacity: 0.22;
+    transition: opacity 0.35s;
+
+    &.is-active {
+      opacity: 0.8;
+    }
+  }
+}
+
+// No growing photograph and no sliding label — the card simply changes as it is
+// pointed at. The scroll behaviour is handled in the component, which asks the
+// browser to jump rather than glide when the same preference is set.
+@media (prefers-reduced-motion: reduce) {
+  .gallery-card__photo,
+  .gallery-card__scrim,
+  .gallery-card__cta,
+  .gallery__arrow,
+  .gallery__dot {
+    transition: none;
+  }
+
+  .gallery-card:hover .gallery-card__photo,
+  .gallery-card:focus-visible .gallery-card__photo {
+    scale: 1;
+  }
+}
