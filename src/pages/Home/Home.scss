@@ -1,7 +1,19 @@
+@use '../../styles/variables' as v;
+
+// The featured bands are full-bleed, so the breathing room around them is set
+// here rather than by the .page wrapper they deliberately sit outside of.
 .home {
-  // Space between featured bands, not above the first one — the .page wrapper
-  // already supplies that.
+  padding: 56px 0;
+
+  @media (min-width: v.$bp-md) {
+    padding: 96px 0;
+  }
+
   .feature + .feature {
-    margin-top: 80px;
+    margin-top: 72px;
+
+    @media (min-width: v.$bp-md) {
+      margin-top: 112px;
+    }
   }
 }

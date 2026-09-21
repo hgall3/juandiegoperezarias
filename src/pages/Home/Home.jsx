@@ -12,8 +12,9 @@ function Home() {
   )
 
   // The hero sits outside the .page wrapper deliberately: that wrapper caps its
-  // contents at 1126px, and the hero is full-bleed. Anything after it goes back
-  // inside the wrapper.
+  // contents at 1126px, and the hero is full-bleed. The featured bands are out
+  // of it for the same reason — each one runs its photograph off one edge of
+  // the window, which the wrapper's centring would prevent.
   return (
     <>
       <HeroCarousel slides={heroSlides} />
@@ -21,7 +22,7 @@ function Home() {
       {/* The bands alternate by position: odd ones face the other way, so a
           second entry in the array lands its photograph on the left without
           anyone having to say so. */}
-      <section className="page home">
+      <section className="home">
         {features.map((item, index) => (
           <Feature key={item.id} item={item} reversed={index % 2 === 1} />
         ))}

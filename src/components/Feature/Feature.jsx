@@ -22,7 +22,7 @@ function Feature({ item, reversed = false }) {
         className="feature__image"
         src={src}
         srcSet={srcSet}
-        sizes="(min-width: 1024px) 50vw, 100vw"
+        sizes="(min-width: 1024px) 57vw, 100vw"
         alt={alt}
         width="1500"
         height="1000"
@@ -37,7 +37,7 @@ function Feature({ item, reversed = false }) {
           {title}
         </h2>
 
-        <p className="feature__body">{text}</p>
+        <p className="feature__body text-small">{text}</p>
 
         {action?.to && (
           <Link to={action.to} className="feature__cta">

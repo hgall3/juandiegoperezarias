@@ -1,24 +1,46 @@
 @use '../../styles/variables' as v;
 
-// Mobile-first: the band is one column, photograph on top, words underneath.
-// The two-column layout only exists from $bp-md up.
+// The band is full-bleed on purpose: it is NOT wrapped in .page, because that
+// wrapper caps its contents at 1126px and centres them, which is exactly the
+// margin the photograph has to escape on one side.
+//
+// Mobile-first: one column, the photograph edge to edge across the top and the
+// words padded in underneath it. The two-column layout only exists from $bp-md.
 .feature {
   display: grid;
-  gap: 24px;
+  gap: 28px;
 
-  @media (min-width: v.$bp-md) {
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: center;
+  // The photograph is cropped rather than letterboxed. 4:3 is a touch squarer
+  // than the 3:2 the camera gave it, which is what lets it sit tall enough to
+  // hold the column beside it; object-fit keeps the subject centred in the
+  // crop instead of squashing him.
+  &__image {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
   }
 
-  // The photograph leads in the markup, so the sides are set by grid placement
-  // rather than by source order. Default: words left, photograph right. The
-  // modifier swaps the two columns and nothing else.
+  &__text {
+    padding: 0 v.$space;
+  }
+
   @media (min-width: v.$bp-md) {
+    // The photograph takes the larger share. minmax(0, …) rather than a bare
+    // fraction: without it a long word in the text column can push the grid
+    // wider than the window and bring back the horizontal scrollbar.
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 72px;
+    align-items: center;
+
+    // Sides are set by grid placement, not source order, so the photograph can
+    // stay first in the markup and lead on a phone.
     .feature__text {
       grid-column: 1;
       grid-row: 1;
+      // Far less than .page was giving it, and none at all on the side the
+      // photograph runs off.
+      padding: 0 0 0 64px;
     }
 
     .feature__image {
@@ -26,8 +48,10 @@
       grid-row: 1;
     }
 
+    // Mirrored: photograph off the left edge, words to the right of it.
     &--reversed .feature__text {
       grid-column: 2;
+      padding: 0 64px 0 0;
     }
 
     &--reversed .feature__image {
@@ -35,15 +59,10 @@
     }
   }
 
-  &__image {
-    width: 100%;
-    height: auto;
-  }
-
   // The eyebrow above the title. The accent is the same muted red the navbar
   // panels use — the one colour on the site — rather than a new value.
   &__breadcrumb {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     font-size: 0.625rem; // 10px, the same step the button's label uses
     font-weight: 600;
     line-height: 1.6;
@@ -52,13 +71,18 @@
     letter-spacing: 0.18em;
   }
 
-  // Sizes come from the global h2, so nothing is restated here.
+  // The size is the global h2's. The cap is what puts "del Chimborazo" on its
+  // own line: with the no-break space in the title it cannot break anywhere
+  // else, so the two lines are fixed without a <br> in the content.
   &__title {
+    max-width: 9em;
     margin-bottom: 20px;
   }
 
+  // Deliberately below the body size — this is a standfirst under a title, not
+  // running text, and the smaller step keeps the title dominant.
   &__body {
-    max-width: 52ch; // a comfortable measure; longer lines are hard to track
+    max-width: 46ch; // a comfortable measure; longer lines are hard to track
   }
 
   // A quiet link, not the filled .button — the band already has a photograph
@@ -66,7 +90,7 @@
   // button's, so the two still read as the same family of action.
   &__cta {
     display: inline-block;
-    margin-top: 28px;
+    margin-top: 32px;
     padding-bottom: 6px;
     font-size: 0.625rem; // 10px
     font-weight: 600;
