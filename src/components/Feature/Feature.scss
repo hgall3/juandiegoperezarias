@@ -18,19 +18,20 @@
   // every time the band comes back round rather than only on first sight.
   //
   // Nothing leaves the flow and nothing is pinned: the band occupies exactly
-  // the space it always did, and only its contents move, by a distance small
-  // enough to read as the page settling rather than as an effect. It must never
-  // travel far enough to look like one section passing over another.
+  // the space it always did, and only its contents move inside it. The travel
+  // is long enough for the eye to follow the photograph up into place, which is
+  // where the drama comes from — but it is still just the contents settling. No
+  // band is ever laid over another, whatever these numbers are set to.
   //
   // The curve is the one the navbar already uses — a quick start that comes to
   // rest gently, which is what keeps the arrival from looking mechanical.
   &__image,
   &__text {
     opacity: 0;
-    translate: 0 24px;
+    translate: 0 64px;
     transition:
-      opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
-      translate 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+      translate 1.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   // The words follow the photograph by a beat, so the band composes itself
@@ -41,7 +42,7 @@
   // already off screen by then, a staggered exit would be time spent resetting
   // rather than anything anyone sees.
   &__text {
-    transition-delay: 140ms;
+    transition-delay: 220ms;
   }
 
   &:not(.is-revealed) &__text {
