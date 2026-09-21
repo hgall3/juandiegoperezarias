@@ -21,7 +21,7 @@ export const features = [
     srcSet: `${baltazar900} 900w, ${baltazar1500} 1500w`,
     alt: 'Baltasar Ushca, hielero del Chimborazo, con sombrero de fieltro y bufanda turquesa sobre un poncho rojo, en la ladera del volcán; detrás, sus mulas entre la niebla.',
     breadcrumb: 'Libro Miradas — Flanco oriental del Chimborazo',
-    title: 'El Hielero del Chimborazo',
+    title: 'El hielero del Chimborazo',
     text: 'Baltasar Ushca, nieto del Chimborazo, sube a donde su abuelo para cosechar hielo de sus entrañas, siguiendo el mismo camino de frío y de sudor que siguieron su padre, sus abuelos, sus bisabuelos y todos los demás.',
     action: {
       label: 'Leer más',
