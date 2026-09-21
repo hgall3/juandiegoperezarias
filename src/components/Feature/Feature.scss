@@ -65,7 +65,9 @@
   // with a longer measure to match. Left at the laptop's settings, the text
   // reads as a thin strip beside a very large picture.
   @media (min-width: v.$bp-lg) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    // The words take half again as much width as the photograph — the 1.5
+    // against the 1 is exactly that, and is the number to change.
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     gap: 88px;
 
     .feature__text {
@@ -76,9 +78,17 @@
       padding: 0 64px 0 0;
     }
 
+    // Widening the column alone would only move the text across the screen: it
+    // is capped by its own measure, so the type has to grow with the box. Both
+    // values are steps the scale already has — h1's size for the title, the
+    // desktop body size for the paragraph — rather than new ones.
+    .feature__title {
+      font-size: 3rem; // 48px, the h1 step
+    }
+
     .feature__body {
-      font-size: 1rem; // the base body step, up from .text-small's 0.875rem
-      max-width: 54ch;
+      font-size: 1.125rem; // 18px, the base body step at this width
+      max-width: 60ch;
     }
   }
 
