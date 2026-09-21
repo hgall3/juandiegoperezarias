@@ -1,0 +1,56 @@
+@use 'variables' as v;
+
+// The site's one scroll entrance, shared by everything that uses it so the
+// timing is written once. It was tuned by eye on the featured bands and then
+// adopted by the gallery; with a copy in each component file the two would have
+// drifted apart the first time either was adjusted.
+//
+// Pair it with the useReveal hook, which adds .is-revealed to an ancestor for
+// as long as it is on screen. Mark the parts that should arrive with .reveal,
+// and .reveal--delayed for anything that should follow a beat later.
+//
+// This file EMITS CSS, so like _theme.scss it is used exactly once, from
+// main.scss. Components just use the classes — no @use needed.
+
+// Nothing here pins an element or takes it out of the flow. A block keeps the
+// space it always had and only its contents move inside it, so no section is
+// ever laid over another and the page scrolls normally throughout.
+.reveal {
+  opacity: 0;
+  translate: 0 v.$reveal-travel;
+  transition:
+    opacity v.$reveal-duration v.$ease-reveal,
+    translate v.$reveal-duration v.$ease-reveal;
+}
+
+// A beat behind its sibling, so a block composes itself instead of arriving all
+// at once. Short on purpose: stretch it and the delay becomes the thing you
+// notice.
+.reveal--delayed {
+  transition-delay: 220ms;
+}
+
+.is-revealed .reveal {
+  opacity: 1;
+  translate: 0 0;
+}
+
+// Only on the way in. Leaving is not a performance, and since the block is
+// already off screen by the time it resets, a staggered exit would be time
+// spent resetting rather than anything anyone sees.
+:not(.is-revealed) > .reveal--delayed,
+:not(.is-revealed) .reveal--delayed {
+  transition-delay: 0s;
+}
+
+// The content is simply there, in place and at full strength, with no arrival
+// to watch. Belt and braces alongside the same check inside useReveal: this
+// holds whatever the hook does, so no frame of the hidden state can slip
+// through between the first paint and the observer's first callback.
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+}

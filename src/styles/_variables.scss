@@ -26,3 +26,32 @@ $space: 24px;
 // a serif fallback for the serif face keeps the swap from visibly reflowing.
 $font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
 $font-body: 'Work Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+// The scroll entrance shared by the featured bands and the gallery, consumed by
+// _motion.scss. Sass rather than custom properties because nothing swaps these
+// at runtime — they are design decisions the build can resolve and discard.
+//
+// These two have been tuned by eye more than once. Keeping them here is what
+// makes the next adjustment one edit rather than a hunt through component files.
+$reveal-travel: 64px;
+$reveal-duration: 1.6s;
+
+// A quick start coming to rest gently, which is what keeps an arrival from
+// looking mechanical. The same curve the navbar uses for its own transitions.
+$ease-reveal: cubic-bezier(0.22, 1, 0.36, 1);
+
+// Where the words start in a full-bleed homepage section — the featured band's
+// text and the gallery's heading and first card all begin on this line, so the
+// column of content reads as one column down the page rather than as blocks
+// that each chose their own margin.
+//
+// Shared rather than written in each component file because the two must agree:
+// they sit directly above one another, so any difference between them is
+// visible as a step, which is precisely how they came apart the first time.
+//
+// The desktop value steps back in at $bp-lg on purpose. From there the band
+// splits its grid evenly and the photograph grows, and holding the wider inset
+// would leave the words in a thin strip beside it.
+$section-inset: $space;
+$section-inset-md: 96px;
+$section-inset-lg: 64px;

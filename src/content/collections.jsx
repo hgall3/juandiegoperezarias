@@ -18,11 +18,15 @@ export const photoEssays = [
   { title: 'Ojo con el tigre' },
 ]
 
+// The slug is the unaccented, hyphenated form the URL will use once each
+// category has its own page, and it is what galleryCards.jsx tags a photograph
+// with — so a card takes its label from the title here rather than repeating
+// it, and renaming a category renames it in the navbar and on the cards at once.
 export const galleries = [
-  { title: 'Paisaje' },
-  { title: 'Gente' },
-  { title: 'Flora y fauna' },
-  { title: 'Quito' },
+  { slug: 'paisaje', title: 'Paisaje' },
+  { slug: 'gente', title: 'Gente' },
+  { slug: 'flora-y-fauna', title: 'Flora y fauna' },
+  { slug: 'quito', title: 'Quito' },
 ]
 
 export const videos = [
