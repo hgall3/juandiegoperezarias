@@ -59,6 +59,29 @@
     }
   }
 
+  // On a large display the band is rebalanced rather than merely stretched: an
+  // even split gives the words as much room as the photograph, the outer margin
+  // comes back in, and the paragraph steps up to the next size on the scale
+  // with a longer measure to match. Left at the laptop's settings, the text
+  // reads as a thin strip beside a very large picture.
+  @media (min-width: v.$bp-lg) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 88px;
+
+    .feature__text {
+      padding: 0 0 0 64px;
+    }
+
+    &--reversed .feature__text {
+      padding: 0 64px 0 0;
+    }
+
+    .feature__body {
+      font-size: 1rem; // the base body step, up from .text-small's 0.875rem
+      max-width: 54ch;
+    }
+  }
+
   // The eyebrow above the title. The accent is the same muted red the navbar
   // panels use — the one colour on the site — rather than a new value.
   &__breadcrumb {

@@ -8,6 +8,12 @@
 // width at which the desktop layout takes over — not a max for the mobile one.
 $bp-md: 1024px;
 
+// A large external display, as opposed to a laptop. Everything from $bp-md up
+// otherwise gets the same layout, which leaves a 13" screen and a 27" monitor
+// looking alike — the second has room the first does not, and a column sized
+// for the laptop reads as a thin strip on it.
+$bp-lg: 1440px;
+
 // The width at which the navbar drops its full-screen panel for the desktop
 // row. Lower than $bp-md because four dropdown triggers fit comfortably on a
 // tablet, where nine flat links would not have.
