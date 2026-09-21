@@ -119,6 +119,11 @@
     // Snapping lands a card on the gutter rather than flush against the window.
     scroll-padding-inline-start: var(--gallery-gutter);
     cursor: grab;
+    // Not scoped to .is-dragging. That class only lands after a React render,
+    // and a selection begun in the frames before it would survive the whole
+    // drag. The row is a control surface rather than prose, so there is nothing
+    // here anyone wants to select anyway.
+    user-select: none;
 
     // Scrollable, but without the bar: on the platforms that show one
     // permanently it would sit under the photographs as a grey slab.
@@ -134,9 +139,6 @@
       // Snapping fights a drag in progress — it keeps trying to settle while
       // the hand is still moving. It comes back the moment the pointer lifts.
       scroll-snap-type: none;
-      // A drag over photographs would otherwise start a native image drag or
-      // select the captions.
-      user-select: none;
     }
 
     &:focus-visible {
@@ -160,6 +162,11 @@
   overflow: hidden;
   text-decoration: none;
   scroll-snap-align: start;
+  // The browser's own stylesheet gives every anchor `cursor: pointer`, and that
+  // beats anything inherited — so without this the grab and grabbing cursors
+  // would show on the gaps between cards and nowhere else, which is precisely
+  // where nobody drags. Inheriting hands the track's cursor back.
+  cursor: inherit;
 
   @media (min-width: v.$bp-sm) {
     width: 300px;

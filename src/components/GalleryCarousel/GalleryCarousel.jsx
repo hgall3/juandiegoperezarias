@@ -136,6 +136,9 @@ function GalleryCarousel() {
     // rubber-banding that a scrollLeft assignment cannot reproduce, and
     // intercepting it would make the row feel worse on a phone, not better.
     if (event.pointerType === 'touch') return
+    // Primary button only. A right-click opening a context menu would otherwise
+    // begin a drag that no pointerup ever ends.
+    if (event.button !== 0) return
 
     const track = trackRef.current
     if (!track) return
@@ -270,13 +273,23 @@ function GalleryCarousel() {
         onKeyDown={onKeyDown}
         onFocusCapture={onFocusCapture}
         onClickCapture={onClickCapture}
+        // Anchors and images are draggable by default, and the browser starting
+        // its own drag cancels the pointer stream this carousel runs on — so
+        // over a card, which is the whole surface, dragging would do nothing at
+        // all. Refusing the gesture here leaves the pointer events intact.
+        onDragStart={(event) => event.preventDefault()}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
       >
         {galleryCards.map((card, position) => (
-          <Link key={card.slug} to={card.href} className="gallery-card">
+          <Link
+            key={card.slug}
+            to={card.href}
+            className="gallery-card"
+            draggable="false"
+          >
             <img
               className="gallery-card__photo"
               src={card.src}
