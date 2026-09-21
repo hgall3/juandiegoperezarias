@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 
-// Reveals an element the first time it is scrolled into view. The caller gets a
-// ref to attach and a boolean to turn into a class; the movement itself is the
-// caller's own CSS, so each block can arrive in a way that suits it.
+// Reveals an element whenever it is on screen. The caller gets a ref to attach
+// and a boolean to turn into a class; the movement itself is the caller's own
+// CSS, so each block can arrive in a way that suits it.
 //
 // Nothing here moves the page or takes an element out of the flow. The section
 // keeps its place and simply transitions in where it already sits — the effect
 // is the content arriving, not one layer sliding across another.
 //
-// A section that scrolled back out of view does NOT hide again. Replaying the
-// entrance every time it passes would draw attention to the mechanism, which is
-// exactly what a quiet reveal is trying not to do.
+// The observer keeps watching for as long as the element is mounted, and the
+// flag tracks whether it is currently in view rather than whether it has ever
+// been. That is deliberate: a block that revealed once and then stayed put
+// makes the effect feel like it has switched itself off on the way back down.
+// It should read the same every time it comes round, not only on first load.
 
 // How far into the window an element must come before it starts. A negative
 // bottom margin rather than a threshold on purpose: a threshold is a fraction
@@ -39,21 +41,20 @@ export function useReveal() {
 
   useEffect(() => {
     const node = ref.current
-    // Already arrived — either it was never going to animate, or it has been
-    // seen and the observer has done its job.
-    if (!node || revealed) return
+    if (!node || skipsReveal()) return
 
+    // Straight from the entry: on screen is revealed, off screen is not. The
+    // element only leaves this state once it is out of the window entirely, so
+    // the reset is never visible — what you see is a fresh arrival each time.
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setRevealed(true)
-      },
+      ([entry]) => setRevealed(entry.isIntersecting),
       { rootMargin: ROOT_MARGIN },
     )
 
     observer.observe(node)
 
     return () => observer.disconnect()
-  }, [revealed])
+  }, [])
 
   return [ref, revealed]
 }

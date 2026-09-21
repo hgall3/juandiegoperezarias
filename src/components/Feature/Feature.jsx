@@ -10,8 +10,8 @@ import './Feature.scss'
 // reading order the same for a screen reader whichever way the band faces.
 function Feature({ item, reversed = false }) {
   const { src, srcSet, alt, breadcrumb, title, text, action } = item
-  // The band rises into place the first time it is scrolled to. The class is
-  // all this adds — the movement is in Feature.scss.
+  // The band rises into place whenever it is scrolled to, every time round.
+  // The class is all this adds — the movement is in Feature.scss.
   const [ref, revealed] = useReveal()
 
   return (

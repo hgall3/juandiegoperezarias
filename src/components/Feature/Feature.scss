@@ -12,8 +12,10 @@
 
   // ---- Reveal -------------------------------------------------------------
   //
-  // The band starts fractionally low and transparent and settles into place the
-  // first time it is scrolled to; useReveal adds .is-revealed when it does.
+  // The band starts fractionally low and transparent and settles into place as
+  // it is scrolled to; useReveal adds .is-revealed for as long as it is on
+  // screen, and takes it away once it is fully past, so the arrival plays again
+  // every time the band comes back round rather than only on first sight.
   //
   // Nothing leaves the flow and nothing is pinned: the band occupies exactly
   // the space it always did, and only its contents move, by a distance small
@@ -34,8 +36,16 @@
   // The words follow the photograph by a beat, so the band composes itself
   // instead of arriving all at once. Short on purpose: stretch this and the
   // delay itself becomes the thing you notice.
+  //
+  // Only on the way in. Leaving is not a performance — and since the band is
+  // already off screen by then, a staggered exit would be time spent resetting
+  // rather than anything anyone sees.
   &__text {
     transition-delay: 140ms;
+  }
+
+  &:not(.is-revealed) &__text {
+    transition-delay: 0s;
   }
 
   &.is-revealed &__image,
