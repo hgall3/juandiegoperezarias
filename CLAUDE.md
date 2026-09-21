@@ -91,6 +91,17 @@ Layout is **mobile-first**: breakpoints are only ever used with `min-width`, so
 `$bp-md: 1024px` is the width at which the desktop layout takes over, not a
 ceiling for the mobile one.
 
+The homepage's sections are **full-bleed** — they sit outside the `.page`
+wrapper so a photograph or a card row can run off an edge of the window. Because
+that wrapper isn't there to inset them, each one would otherwise pick its own
+left margin, and stacked directly on top of one another any difference reads as
+a step down the page. They therefore all start their content on one line, held
+in `$section-inset` / `$section-inset-md` / `$section-inset-lg`: the featured
+band's words, the gallery's heading and its first card all begin there. A new
+full-bleed section uses those variables rather than a margin of its own, and the
+desktop value deliberately steps back *in* at `$bp-lg`, where the band splits
+its grid evenly and the photograph grows.
+
 **The site does not follow the visitor's OS appearance setting.** There is no
 `prefers-color-scheme` block and none should be added: everyone sees the same
 appearance whatever their device or the time of day. `color-scheme` is set to a

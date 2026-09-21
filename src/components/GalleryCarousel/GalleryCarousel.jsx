@@ -150,8 +150,10 @@ function GalleryCarousel() {
 
     drag.current = {
       pointerId: event.pointerId,
+      // startX is only ever used to judge click-versus-drag; lastX is what the
+      // scrolling works from.
       startX: event.clientX,
-      startScroll: track.scrollLeft,
+      lastX: event.clientX,
       travelled: 0,
     }
 
@@ -163,11 +165,29 @@ function GalleryCarousel() {
     const state = drag.current
     if (!state || state.pointerId !== event.pointerId) return
 
-    const moved = event.clientX - state.startX
-    // The furthest it ever got, not where it ended: a drag out and back would
-    // otherwise read as a click and navigate.
-    state.travelled = Math.max(state.travelled, Math.abs(moved))
-    trackRef.current.scrollLeft = state.startScroll - moved
+    const track = trackRef.current
+    if (!track) return
+
+    // Frame by frame, against wherever the track is now — NOT the total
+    // distance from where the press began against where the track was then.
+    //
+    // The difference shows the moment a drag runs past an end. scrollLeft
+    // clamps there, so an absolute sum keeps growing against a figure the
+    // track can no longer reach, and dragging back does nothing until that
+    // whole overshoot has been paid off. The row sticks, then lurches. Applying
+    // each frame's delta to the current position cannot drift, because there is
+    // no running total to drift from.
+    const delta = event.clientX - state.lastX
+    state.lastX = event.clientX
+
+    // Still measured from the start, and still the furthest it ever got rather
+    // than where it ended: a drag out and back should not read as a click.
+    state.travelled = Math.max(
+      state.travelled,
+      Math.abs(event.clientX - state.startX),
+    )
+
+    track.scrollLeft -= delta
   }
 
   const endDrag = (event) => {

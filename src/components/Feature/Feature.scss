@@ -44,7 +44,7 @@
       grid-row: 1;
       // Far less than .page was giving it, and none at all on the side the
       // photograph runs off.
-      padding: 0 0 0 96px;
+      padding: 0 0 0 v.$section-inset-md;
     }
 
     .feature__image {
@@ -55,7 +55,7 @@
     // Mirrored: photograph off the left edge, words to the right of it.
     &--reversed .feature__text {
       grid-column: 2;
-      padding: 0 96px 0 0;
+      padding: 0 v.$section-inset-md 0 0;
     }
 
     &--reversed .feature__image {
@@ -73,11 +73,11 @@
     gap: 88px;
 
     .feature__text {
-      padding: 0 0 0 64px;
+      padding: 0 0 0 v.$section-inset-lg;
     }
 
     &--reversed .feature__text {
-      padding: 0 64px 0 0;
+      padding: 0 v.$section-inset-lg 0 0;
     }
 
     .feature__body {

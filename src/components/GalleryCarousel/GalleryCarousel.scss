@@ -8,20 +8,26 @@
 // NOT wrapped in .page, whose max-width and centring would tidy the cut-off
 // card away and with it the only sign that there is more to see.
 .gallery {
-  // The inset that the heading, the arrows and the first card all line up on.
-  // None of these numbers are new: they are the hero caption's gutter at each
-  // width, and the featured band's text inset on a desktop, so the row starts
-  // where the rest of the page already starts.
-  --gallery-gutter: #{v.$space};
+  // The line the heading, the arrows and the first card all start on. It is the
+  // shared section inset, which is the same line the featured band above starts
+  // its words on — the two sit directly on top of one another, so anything else
+  // reads as a step between them.
+  //
+  // A custom property rather than the Sass value used directly: the track and
+  // the heading row both need it, and scroll-padding needs it too.
+  --gallery-gutter: #{v.$section-inset};
   --gallery-gap: 16px;
 
   @media (min-width: v.$bp-sm) {
-    --gallery-gutter: 56px;
     --gallery-gap: 24px;
   }
 
   @media (min-width: v.$bp-md) {
-    --gallery-gutter: 96px;
+    --gallery-gutter: #{v.$section-inset-md};
+  }
+
+  @media (min-width: v.$bp-lg) {
+    --gallery-gutter: #{v.$section-inset-lg};
   }
 
   // ---- Heading row --------------------------------------------------------
@@ -118,6 +124,10 @@
     scroll-snap-type: x proximity;
     // Snapping lands a card on the gutter rather than flush against the window.
     scroll-padding-inline-start: var(--gallery-gutter);
+    // Dragging past either end stops at the end instead of handing the leftover
+    // scroll to the page — which on a trackpad is what triggers the browser's
+    // swipe-to-go-back, and what makes a firm drag feel like it snags.
+    overscroll-behavior-x: contain;
     cursor: grab;
     // Not scoped to .is-dragging. That class only lands after a React render,
     // and a selection begun in the frames before it would survive the whole
@@ -243,18 +253,46 @@
   }
 }
 
-// Where there is a pointer, the card holds itself back until it is pointed at.
-// Everything below is inside this query on purpose: a touch screen reports
-// hover as a state it can never leave, so a card tapped on a phone would keep
-// its hover treatment until something else was tapped.
+// Where there is a pointer, the photograph is on its own until it is pointed
+// at: no name, no label, no scrim — just the picture. Everything the card has
+// to say arrives on hover and leaves again with it.
+//
+// All of it sits inside this query on purpose. A touch screen reports hover as
+// a state it can never leave, so a card tapped on a phone would keep whatever
+// hover gives it until something else was tapped. Below, outside the query, the
+// caption is simply always there, which is the right answer where there is no
+// pointer to reveal it with.
 @media (hover: hover) {
   .gallery-card {
-    &__cta {
+    &__scrim {
       opacity: 0;
+      // Deeper than the resting scrim a touch device gets, and across the whole
+      // card rather than only its foot, so the photograph recedes and the words
+      // come forward.
+      background: linear-gradient(
+        to top,
+        rgb(0 0 0 / 84%) 0%,
+        rgb(0 0 0 / 52%) 50%,
+        rgb(0 0 0 / 34%) 100%
+      );
+      transition: opacity 0.7s v.$ease-reveal;
+    }
+
+    &__caption {
+      opacity: 0;
+      transition: opacity 0.7s v.$ease-reveal;
+    }
+
+    &__title {
+      translate: 0 8px;
+      transition: translate 0.7s v.$ease-reveal;
+    }
+
+    // Behind the name by a beat, and travelling the shorter distance, so the
+    // two arrive as one movement rather than in lockstep.
+    &__cta {
       translate: 0 6px;
-      transition:
-        opacity 0.7s v.$ease-reveal,
-        translate 0.7s v.$ease-reveal;
+      transition: translate 0.7s v.$ease-reveal 80ms;
     }
 
     &:hover,
@@ -263,19 +301,13 @@
         scale: 1.03;
       }
 
-      // Deepened across the whole card rather than only at the foot, so the
-      // photograph recedes and the words come forward.
-      .gallery-card__scrim {
-        background: linear-gradient(
-          to top,
-          rgb(0 0 0 / 84%) 0%,
-          rgb(0 0 0 / 52%) 50%,
-          rgb(0 0 0 / 34%) 100%
-        );
+      .gallery-card__scrim,
+      .gallery-card__caption {
+        opacity: 1;
       }
 
+      .gallery-card__title,
       .gallery-card__cta {
-        opacity: 0.85;
         translate: 0 0;
       }
     }
@@ -334,14 +366,24 @@
 @media (prefers-reduced-motion: reduce) {
   .gallery-card__photo,
   .gallery-card__scrim,
+  .gallery-card__caption,
+  .gallery-card__title,
   .gallery-card__cta,
   .gallery__arrow,
   .gallery__dot {
     transition: none;
   }
 
+  // The caption still appears and disappears with the pointer — that is what
+  // the card is for. It simply does so without the growing photograph or the
+  // rise, which are the parts that move.
   .gallery-card:hover .gallery-card__photo,
   .gallery-card:focus-visible .gallery-card__photo {
     scale: 1;
+  }
+
+  .gallery-card__title,
+  .gallery-card__cta {
+    translate: none;
   }
 }
