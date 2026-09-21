@@ -1,21 +1,139 @@
 @use '../../styles/variables' as v;
 
+// Mobile-first: everything stacks, and the two-column row only appears from
+// $bp-md up.
+//
+// The footer sits on the page's own background. The reference showed a cream
+// band, but that colour is not in the scheme, so the separation is a hairline
+// in --color-border instead of a second ground.
+//
+// No font sizes are set here. The labels and the small print carry the global
+// .text-small class, and the contact lines inherit the base body size — the
+// reference's serif and its smaller steps would both mean inventing type the
+// scale doesn't have.
 .footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: v.$space;
+  padding: 40px v.$space;
   border-top: 1px solid var(--color-border);
-  font-size: 14px;
+
+  @media (min-width: v.$bp-md) {
+    padding: 56px v.$space 32px;
+  }
+
+  // Matches the .page wrapper, so the footer's text lines up with the content
+  // above it instead of running to the window edges on a wide screen.
+  &__inner {
+    max-width: 1126px;
+    margin: 0 auto;
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    @media (min-width: v.$bp-md) {
+      flex-direction: row;
+      // Pushed apart rather than spaced by a gap: the two blocks sit at the
+      // outer edges of the column, as in the reference.
+      justify-content: space-between;
+    }
+  }
+
+  // The small uppercase labels. They stay <h2> because each one heads a section
+  // for a screen reader, but the global h2 styles are display type meant for a
+  // page title, so the family and weight are reset to the body face here. The
+  // size comes from .text-small in the markup, not from this file.
+  //
+  // The capitals come from CSS, not the source string: written uppercase in the
+  // markup, some screen readers would spell "CONTACTO" out letter by letter.
+  &__label {
+    margin-bottom: 20px;
+    font-family: v.$font-body;
+    font-weight: 600;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    opacity: 0.75;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+  }
+
+  &__line {
+    color: var(--color-heading);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+
+  // The city is context, not something to act on, so it sits back from the two
+  // lines above it — opacity on the inherited ink rather than a fixed grey.
+  &__place {
+    opacity: 0.8;
+  }
 
   &__socials {
     display: flex;
-    gap: 16px;
+    gap: 10px;
     list-style: none;
+  }
 
-    a {
-      display: flex;
+  // Outlined circles. 40px is a fixed target for a finger, not type, so px is
+  // right: it should hold its size whatever the reader's font setting is. The
+  // icon inside is sized the same way.
+  &__social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+    color: var(--color-heading);
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      color: var(--color-bg);
+      background: var(--color-heading);
+      border-color: var(--color-heading);
     }
+  }
+
+  &__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+
+    @media (min-width: v.$bp-md) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 56px;
+    }
+  }
+
+  &__legal-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  // Shared by the copyright line and the two legal labels, so they read as one
+  // row rather than two kinds of small print.
+  &__legal {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    opacity: 0.7;
   }
 }
