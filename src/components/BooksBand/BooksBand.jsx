@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import Button from '../Button/Button.jsx'
 import { useReveal } from '../../hooks/useReveal.jsx'
 import { featuredBook, shelfBooks } from '../../content/homeBooks.jsx'
 import parqueCajas900 from '../../assets/books/parque-cajas-900.jpg'
@@ -141,10 +142,10 @@ function BooksBand() {
             {/* The cover above is a second route to the same page, so it is
                 hidden from screen readers and skipped by Tab — this link is the
                 one that carries the book's name. */}
-            <Link to={featuredBook.href} className="books__cta">
+            <Button to={featuredBook.href} className="books__cta">
               Ver libro
               <span className="sr-only"> — {featuredBook.title}</span>
-            </Link>
+            </Button>
           </div>
         </article>
 
@@ -178,10 +179,10 @@ function BooksBand() {
                   <p className="book__subtitle">{book.subtitle}</p>
                 )}
 
-                <Link to={book.href} className="books__cta">
+                <Button to={book.href} className="books__cta">
                   Ver libro
                   <span className="sr-only"> — {book.title}</span>
-                </Link>
+                </Button>
               </div>
             </article>
           ))}
