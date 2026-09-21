@@ -10,8 +10,8 @@ import mujerTrenzas480 from '../assets/gallery/mujer-trenzas-480.jpg'
 import mujerTrenzas750 from '../assets/gallery/mujer-trenzas-750.jpg'
 import dosSaposVerdes480 from '../assets/gallery/dos-sapos-verdes-480.jpg'
 import dosSaposVerdes750 from '../assets/gallery/dos-sapos-verdes-750.jpg'
-import sapoVerde480 from '../assets/gallery/sapo-verde-480.jpg'
-import sapoVerde750 from '../assets/gallery/sapo-verde-750.jpg'
+import orquidea3480 from '../assets/gallery/orquidea3-480.jpg'
+import orquidea3750 from '../assets/gallery/orquidea3-750.jpg'
 import diabloIglesia480 from '../assets/gallery/diablo-iglesia-480.jpg'
 import diabloIglesia750 from '../assets/gallery/diablo-iglesia-750.jpg'
 import iglesiaSanFrancisco480 from '../assets/gallery/iglesia-san-francisco-480.jpg'
@@ -81,11 +81,11 @@ const photographs = [
     alt: 'Dos ranas verdes de ojos claros trepadas sobre una heliconia naranja cubierta de gotas de agua, recortadas contra un fondo oscuro.',
   },
   {
-    slug: 'sapo-verde',
+    slug: 'orquidea3',
     category: 'flora-y-fauna',
-    small: sapoVerde480,
-    large: sapoVerde750,
-    alt: 'Una rana verde de ojos dorados posada en una rama delgada, recortada contra un fondo desenfocado de hojas y frutos rojos.',
+    small: orquidea3480,
+    large: orquidea3750,
+    alt: 'Una orquídea de dos pétalos anaranjados y rojos, colgada de un tallo fino y recortada contra una hoja oscura en penumbra.',
   },
   {
     slug: 'diablo-iglesia',
