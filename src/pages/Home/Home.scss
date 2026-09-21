@@ -1,3 +1,7 @@
 .home {
-  // Home-specific styles go here.
+  // Space between featured bands, not above the first one — the .page wrapper
+  // already supplies that.
+  .feature + .feature {
+    margin-top: 80px;
+  }
 }

@@ -1,0 +1,84 @@
+@use '../../styles/variables' as v;
+
+// Mobile-first: the band is one column, photograph on top, words underneath.
+// The two-column layout only exists from $bp-md up.
+.feature {
+  display: grid;
+  gap: 24px;
+
+  @media (min-width: v.$bp-md) {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  // The photograph leads in the markup, so the sides are set by grid placement
+  // rather than by source order. Default: words left, photograph right. The
+  // modifier swaps the two columns and nothing else.
+  @media (min-width: v.$bp-md) {
+    .feature__text {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .feature__image {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    &--reversed .feature__text {
+      grid-column: 2;
+    }
+
+    &--reversed .feature__image {
+      grid-column: 1;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: auto;
+  }
+
+  // The eyebrow above the title. The accent is the same muted red the navbar
+  // panels use — the one colour on the site — rather than a new value.
+  &__breadcrumb {
+    margin-bottom: 16px;
+    font-size: 0.625rem; // 10px, the same step the button's label uses
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+
+  // Sizes come from the global h2, so nothing is restated here.
+  &__title {
+    margin-bottom: 20px;
+  }
+
+  &__body {
+    max-width: 52ch; // a comfortable measure; longer lines are hard to track
+  }
+
+  // A quiet link, not the filled .button — the band already has a photograph
+  // carrying it, and a solid block here would compete with it. The type is the
+  // button's, so the two still read as the same family of action.
+  &__cta {
+    display: inline-block;
+    margin-top: 28px;
+    padding-bottom: 6px;
+    font-size: 0.625rem; // 10px
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--color-heading);
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-accent);
+    transition: color 0.25s, border-color 0.25s;
+
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+}
