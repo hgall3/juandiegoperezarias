@@ -65,14 +65,19 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
     background: radial-gradient(
       circle at 50% 42%,
       transparent 0%,
-      color-mix(in srgb, var(--books-ground) 14%, transparent) 45%,
-      color-mix(in srgb, var(--books-ground) 40%, transparent) 100%
+      color-mix(in srgb, var(--books-ground) 5%, transparent) 50%,
+      color-mix(in srgb, var(--books-ground) 20%, transparent) 100%
     );
   }
 
-  // The move the whole band is built on. Clear at the very top so the
-  // photograph reads as a photograph, and completely black from three-quarters
-  // down, so the band ends flat and carries on into whatever follows it.
+  // The move the whole band is built on, and the one thing in it that must not
+  // be compromised: the band ends in FLAT GROUND, with no photograph left in
+  // it, so the join with the section below is invisible. Everything above that
+  // point is negotiable; that is not.
+  //
+  // Held deliberately low through the upper half — barely a veil — so the
+  // photograph reads as a photograph in colour rather than as a pale wash, then
+  // ramped hard over a short distance to reach solid well before the foot.
   //
   // The stops sit higher on a phone, where the same content occupies far more
   // of a narrower band: left at the desktop positions the shelf would still be
@@ -81,11 +86,11 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
     background: linear-gradient(
       to bottom,
       transparent 0%,
-      color-mix(in srgb, var(--books-ground) 30%, transparent) 8%,
-      color-mix(in srgb, var(--books-ground) 68%, transparent) 20%,
-      color-mix(in srgb, var(--books-ground) 88%, transparent) 34%,
-      color-mix(in srgb, var(--books-ground) 97%, transparent) 50%,
-      var(--books-ground) 62%,
+      color-mix(in srgb, var(--books-ground) 6%, transparent) 14%,
+      color-mix(in srgb, var(--books-ground) 20%, transparent) 28%,
+      color-mix(in srgb, var(--books-ground) 55%, transparent) 42%,
+      color-mix(in srgb, var(--books-ground) 85%, transparent) 54%,
+      var(--books-ground) 64%,
       var(--books-ground) 100%
     );
 
@@ -93,11 +98,11 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
       background: linear-gradient(
         to bottom,
         transparent 0%,
-        color-mix(in srgb, var(--books-ground) 30%, transparent) 12%,
-        color-mix(in srgb, var(--books-ground) 68%, transparent) 28%,
-        color-mix(in srgb, var(--books-ground) 88%, transparent) 44%,
-        color-mix(in srgb, var(--books-ground) 97%, transparent) 62%,
-        var(--books-ground) 76%,
+        color-mix(in srgb, var(--books-ground) 6%, transparent) 22%,
+        color-mix(in srgb, var(--books-ground) 20%, transparent) 40%,
+        color-mix(in srgb, var(--books-ground) 55%, transparent) 56%,
+        color-mix(in srgb, var(--books-ground) 85%, transparent) 68%,
+        var(--books-ground) 78%,
         var(--books-ground) 100%
       );
     }
