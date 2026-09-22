@@ -178,10 +178,10 @@ function BooksBand() {
                     too. One link rather than several to the same page, which
                     keeps the entry a single stop for anyone tabbing through
                     and still leaves Ver libro as the visible affordance. */}
-                <Link to={book.href} className="book__cta">
+                <Button to={book.href} className="book__cta">
                   Ver libro
                   <span className="sr-only"> — {book.title}</span>
-                </Link>
+                </Button>
               </div>
             </article>
           ))}

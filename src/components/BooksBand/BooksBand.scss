@@ -381,33 +381,41 @@
     opacity: 0.68;
   }
 
-  // Not the featured book's glass box — that size and treatment belong to the
-  // one book the section is built around. This is the quiet underlined link the
-  // featured bands use for "Leer más", in the same muted red, so a secondary
-  // action looks the same wherever it appears on the site.
+  // Two different treatments by width, not one shared between them.
   //
-  // Smaller than that one is, though: it sits beside a 74px cover, three to a
-  // row.
+  // Mobile-first, so the base is the phone's: the quiet underlined link the
+  // featured bands use for "Leer más", in the same muted red. The project only
+  // ever uses min-width queries, so the desktop's square button is restored
+  // inside the breakpoint below rather than this being wrapped in a max-width.
+  //
+  // It is a Button either way, which is what makes the restoring cheap — the
+  // square treatment is the shared component's own, so only the stripping needs
+  // writing out.
   &__cta {
+    --button-bg: transparent;
+    --button-bg-hover: transparent;
+    --button-fg: var(--books-fg);
+
     display: inline-block;
     // Fills whatever height the tallest entry in the row leaves over, which is
     // what puts all three calls to action on one line.
     margin-top: auto;
-    padding-bottom: 5px;
+    min-height: 0;
+    padding: 0 0 5px;
     font-size: 0.4375rem; // 7px
-    font-weight: 600;
     letter-spacing: 0.18em;
-    color: var(--books-fg);
-    text-transform: uppercase;
-    text-decoration: none;
     border-bottom: 1px solid var(--color-accent);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     transition:
       color 0.25s,
-      border-color 0.25s;
+      border-color 0.25s,
+      background 0.25s;
 
     // The rest of the card. Stretching the link rather than wrapping the card
     // in one keeps the markup valid — a link cannot contain another link — and
-    // leaves the underlined words as the visible affordance.
+    // leaves the words as the visible affordance. Both widths get this: the
+    // whole entry is clickable either way.
     &::after {
       position: absolute;
       inset: 0;
@@ -416,6 +424,27 @@
 
     &:hover {
       color: var(--color-accent);
+    }
+
+    // Desktop: back to the square glass button, the same treatment as the
+    // featured book's, only tighter — these three are secondary to it and sit
+    // beside a 74px cover.
+    @media (min-width: v.$bp-sm) {
+      --button-bg: color-mix(in srgb, var(--books-fg) 16%, transparent);
+      --button-bg-hover: color-mix(in srgb, var(--books-fg) 30%, transparent);
+
+      display: inline-flex;
+      min-height: 24px;
+      padding: 6px 12px;
+      border: 1px solid color-mix(in srgb, var(--books-fg) 40%, transparent);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+
+      // The fill is what answers the pointer here, as it does on the featured
+      // book; the words stay put.
+      &:hover {
+        color: var(--books-fg);
+      }
     }
   }
 }
