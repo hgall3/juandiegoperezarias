@@ -372,79 +372,91 @@
   }
 
   &__subtitle {
-    // Guarantees clear air under the subtitle whatever the auto margin below
-    // does. Together with the column's own gap it is the minimum distance the
-    // call to action can ever sit at; usually it sits further down still.
-    margin-bottom: 16px;
     font-size: 0.75rem; // 12px
     line-height: 1.5;
     opacity: 0.68;
+
+    // Only where there is a button beneath it to be separated from. On a phone
+    // the subtitle is the last thing in the entry and this would just be a
+    // trailing gap.
+    @media (min-width: v.$bp-sm) {
+      // Guarantees clear air whatever the auto margin below does. With the
+      // column's own gap it is the closest the button can ever sit; usually the
+      // auto margin pushes it further down still.
+      margin-bottom: 16px;
+    }
   }
 
-  // Two different treatments by width, not one shared between them.
+  // Two different things by width, not one shared between them.
   //
-  // Mobile-first, so the base is the phone's: the quiet underlined link the
-  // featured bands use for "Leer más", in the same muted red. The project only
-  // ever uses min-width queries, so the desktop's square button is restored
-  // inside the breakpoint below rather than this being wrapped in a max-width.
-  //
-  // It is a Button either way, which is what makes the restoring cheap — the
-  // square treatment is the shared component's own, so only the stripping needs
-  // writing out.
+  // Mobile-first, so the base is the phone's: no button at all. The link simply
+  // covers the whole entry and shows nothing of itself, so tapping the cover or
+  // the words goes to the book. The project only ever uses min-width queries,
+  // so the desktop's button is restored inside the breakpoint below rather than
+  // the phone's version hanging off a max-width.
   &__cta {
-    --button-bg: transparent;
-    --button-bg-hover: transparent;
-    --button-fg: var(--books-fg);
-
-    display: inline-block;
-    // Fills whatever height the tallest entry in the row leaves over, which is
-    // what puts all three calls to action on one line.
-    margin-top: auto;
+    position: absolute;
+    inset: 0;
+    // Above the cover and the words, both of which are static, so the tap lands
+    // on the link wherever it falls.
+    z-index: 1;
     min-height: 0;
-    padding: 0 0 5px;
-    font-size: 0.4375rem; // 7px
-    letter-spacing: 0.18em;
-    border-bottom: 1px solid var(--color-accent);
+    padding: 0;
+    background: none;
+    border: 0;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    transition:
-      color 0.25s,
-      border-color 0.25s,
-      background 0.25s;
 
-    // The rest of the card. Stretching the link rather than wrapping the card
-    // in one keeps the markup valid — a link cannot contain another link — and
-    // leaves the words as the visible affordance. Both widths get this: the
-    // whole entry is clickable either way.
-    &::after {
-      position: absolute;
-      inset: 0;
-      content: '';
+    // Nothing is drawn, so the focus ring is the only thing that shows this is
+    // a link at all. It outlines the whole entry, which is exactly what the
+    // link now is.
+    &:focus-visible {
+      outline: 2px solid var(--books-fg);
+      outline-offset: 4px;
     }
 
-    &:hover {
-      color: var(--color-accent);
-    }
-
-    // Desktop: back to the square glass button, the same treatment as the
-    // featured book's, only tighter — these three are secondary to it and sit
-    // beside a 74px cover.
+    // Desktop: a real button again, square and glass like the featured book's,
+    // only tighter — these three are secondary to it and sit beside a 74px
+    // cover. It is the shared Button component underneath, so most of the
+    // treatment is the component's own and only what the phone stripped needs
+    // putting back.
     @media (min-width: v.$bp-sm) {
       --button-bg: color-mix(in srgb, var(--books-fg) 16%, transparent);
       --button-bg-hover: color-mix(in srgb, var(--books-fg) 30%, transparent);
+      --button-fg: var(--books-fg);
 
+      position: static;
       display: inline-flex;
+      // Fills whatever height the tallest entry in the row leaves over, which
+      // is what puts all three buttons on one line.
+      margin-top: auto;
       min-height: 24px;
       padding: 6px 12px;
+      font-size: 0.4375rem; // 7px
+      letter-spacing: 0.18em;
       border: 1px solid color-mix(in srgb, var(--books-fg) 40%, transparent);
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
 
-      // The fill is what answers the pointer here, as it does on the featured
-      // book; the words stay put.
-      &:hover {
-        color: var(--books-fg);
+      // The rest of the card. Stretching the link rather than wrapping the card
+      // in one keeps the markup valid — a link cannot contain another link —
+      // and leaves the button as the visible affordance while the whole entry
+      // stays clickable, as it is on the phone.
+      &::after {
+        position: absolute;
+        inset: 0;
+        content: '';
       }
+    }
+  }
+
+  // The words inside the button. Hidden on a phone, where there is no button to
+  // put them in; the link's aria-label carries the name either way.
+  &__cta-label {
+    display: none;
+
+    @media (min-width: v.$bp-sm) {
+      display: inline;
     }
   }
 }

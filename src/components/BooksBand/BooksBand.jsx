@@ -173,14 +173,23 @@ function BooksBand() {
                   <p className="book__subtitle">{book.subtitle}</p>
                 )}
 
-                {/* The whole entry is this one link: its ::after is stretched
-                    over the card, so the cover and the title lead to the book
-                    too. One link rather than several to the same page, which
-                    keeps the entry a single stop for anyone tabbing through
-                    and still leaves Ver libro as the visible affordance. */}
-                <Button to={book.href} className="book__cta">
-                  Ver libro
-                  <span className="sr-only"> — {book.title}</span>
+                {/* The whole entry is this one link, at both widths — on a
+                    phone the link itself covers the card and shows nothing of
+                    itself, and on a desktop a stretched ::after does the same
+                    job behind a visible button.
+
+                    The name is on the link rather than in its text because the
+                    text is not always there. Spelled out with the title, since
+                    three identical "Ver libro" links tell a screen reader
+                    nothing about which book each one leads to. */}
+                <Button
+                  to={book.href}
+                  className="book__cta"
+                  aria-label={`Ver libro — ${book.title}`}
+                >
+                  <span className="book__cta-label" aria-hidden="true">
+                    Ver libro
+                  </span>
                 </Button>
               </div>
             </article>
