@@ -7,6 +7,10 @@ import { useCallback, useEffect, useState } from 'react'
 // this reads back what that script settled on. Deciding twice is how the two
 // would come to disagree.
 //
+// Two inputs, in order: the visitor's own choice, then the system's setting.
+// There is no time-of-day rule. A system set to switch at sunset already is
+// one, and it knows the real sunset rather than an hour written into the site.
+//
 // What this owns is the change: flipping the mode, remembering that the visitor
 // chose, and following the browser for as long as they have not.
 

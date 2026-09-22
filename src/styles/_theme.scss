@@ -4,12 +4,8 @@
 // which is exactly what the two sets below do.
 //
 // The site has a light mode and a dark mode. Which one a visitor gets is
-// decided by the boot script in index.html, before the first paint, in this
-// order:
-//
-//   1. their own choice, made with the navbar's toggle and remembered;
-//   2. the browser or system setting, which outranks the clock;
-//   3. the hour, used only where the browser states no preference at all.
+// decided by the boot script in index.html, before the first paint: their own
+// choice if they have made one, and otherwise the system's own setting.
 //
 // That script sets data-theme on <html>, and everything here follows from it.
 // There is no `prefers-color-scheme` block: the browser's setting is read once,

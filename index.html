@@ -16,9 +16,9 @@
       of the stylesheet: a module script is deferred, and React has not mounted
       yet either.
 
-      The order is the visitor's own choice first, then the browser's setting,
-      then the hour. The browser outranks the clock deliberately; the clock only
-      speaks when the browser says nothing, which modern browsers rarely do.
+      Two steps only. The visitor's own choice wins, and otherwise the system
+      decides — which on a machine set to switch at sunset is already a clock,
+      and a better one than an hour written in here would be.
 
       React reads whatever this sets rather than deciding again, so the two
       cannot disagree.
@@ -34,21 +34,14 @@
           // visitor's last choice is survivable; failing to set a theme is not.
         }
 
-        var theme
+        var chosen = stored === 'dark' || stored === 'light'
+        var dark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
-        if (stored === 'dark' || stored === 'light') {
-          theme = stored
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          theme = 'dark'
-        } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-          theme = 'light'
-        } else {
-          // Neither query matched, so the browser holds no opinion at all.
-          var hour = new Date().getHours()
-          theme = hour >= 19 || hour < 7 ? 'dark' : 'light'
-        }
-
-        document.documentElement.dataset.theme = theme
+        document.documentElement.dataset.theme = chosen
+          ? stored
+          : dark
+            ? 'dark'
+            : 'light'
       })()
     </script>
   </head>
