@@ -1,0 +1,483 @@
+@use '../../styles/variables' as v;
+
+// The glass treatment's three values, written once. The featured book hands
+// them to the Button component as custom properties; the shelf's plain link
+// uses them directly. Two consumers, one set of numbers, so the buttons in this
+// band cannot drift apart.
+$glass-fill: color-mix(in srgb, var(--books-fg) 16%, transparent);
+$glass-fill-hover: color-mix(in srgb, var(--books-fg) 30%, transparent);
+$glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
+
+// The Libros band: a landscape photograph at the top that dissolves into flat
+// black by its lower half, with the featured book in the bright part and the
+// rest of the collection on the black below.
+//
+// Full-bleed, and unlike the other homepage sections its content is centred
+// rather than started on $section-inset — that inset lines up left-aligned
+// blocks, and there is nothing here to line up with.
+//
+// Its type sits on a photograph, so like the hero the foreground is the page's
+// ground colour used inverted by context rather than a literal white.
+.books {
+  --books-fg: var(--color-bg);
+
+  position: relative;
+  overflow: hidden;
+  padding: 130px 22px 52px;
+
+  // The band's own ground, beneath the photograph. It opens in the page's paper
+  // colour so the top edge melts into the section above with no visible seam,
+  // then falls to black well before the photograph's own fade has finished —
+  // whatever the photograph does, there is already black behind it.
+  //
+  // The middle tone is --color-heading rather than a new dark value: it is the
+  // near-black the site already owns, and at the speed this gradient moves the
+  // difference between one dark and another does not read.
+  background: linear-gradient(
+    to bottom,
+    var(--color-bg) 0%,
+    var(--color-bg) 6%,
+    var(--color-heading) 20%,
+    #000 40%,
+    #000 100%
+  );
+
+  @media (min-width: v.$bp-sm) {
+    padding: 190px v.$space 64px;
+  }
+
+  // ---- Photograph and overlays --------------------------------------------
+
+  // Taller than the band and pulled up, leaving 15% hidden above and below for
+  // the parallax to travel into. See PARALLAX in BooksBand.jsx, which spends
+  // only a third of that.
+  &__photo {
+    position: absolute;
+    top: -15%;
+    left: 0;
+    width: 100%;
+    height: 130%;
+    object-fit: cover;
+    will-change: transform;
+  }
+
+  &__radial,
+  &__fade {
+    position: absolute;
+    inset: 0;
+  }
+
+  // Open in the middle, closing at the corners: it keeps the photograph
+  // readable where it is doing the most work and stops the frame's edges from
+  // competing with the type.
+  &__radial {
+    background: radial-gradient(
+      circle at 50% 42%,
+      rgb(0 0 0 / 0%) 0%,
+      rgb(0 0 0 / 14%) 45%,
+      rgb(0 0 0 / 40%) 100%
+    );
+  }
+
+  // The move the whole band is built on. Clear at the very top so the
+  // photograph reads as a photograph, and completely black from three-quarters
+  // down, so the band ends flat and carries on into whatever follows it.
+  //
+  // The stops sit higher on a phone, where the same content occupies far more
+  // of a narrower band: left at the desktop positions the shelf would still be
+  // sitting on open photograph.
+  &__fade {
+    background: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0%) 0%,
+      rgb(0 0 0 / 30%) 8%,
+      rgb(0 0 0 / 68%) 20%,
+      rgb(0 0 0 / 88%) 34%,
+      rgb(0 0 0 / 97%) 50%,
+      #000 62%,
+      #000 100%
+    );
+
+    @media (min-width: v.$bp-sm) {
+      background: linear-gradient(
+        to bottom,
+        rgb(0 0 0 / 0%) 0%,
+        rgb(0 0 0 / 30%) 12%,
+        rgb(0 0 0 / 68%) 28%,
+        rgb(0 0 0 / 88%) 44%,
+        rgb(0 0 0 / 97%) 62%,
+        #000 76%,
+        #000 100%
+      );
+    }
+  }
+
+  // Above both overlays. The stacking context is the band itself, so nothing
+  // here escapes it.
+  &__inner {
+    position: relative;
+    z-index: 1;
+    color: var(--books-fg);
+  }
+
+  // ---- Section label ------------------------------------------------------
+
+  // The only thing marking the section — there is no large heading. A rule
+  // descending into the word, centred above the featured book.
+  &__label {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 44px;
+
+    @media (min-width: v.$bp-sm) {
+      margin-bottom: 56px;
+    }
+  }
+
+  // Faint at the top and near-solid where it meets the word, so it reads as
+  // arriving rather than as a divider. The shadow is what keeps it visible if
+  // it happens to fall against a bright patch of sky.
+  &__rule {
+    width: 1px;
+    height: 34px;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--books-fg) 8%, transparent),
+      color-mix(in srgb, var(--books-fg) 85%, transparent)
+    );
+    box-shadow: 0 0 12px rgb(0 0 0 / 55%);
+
+    @media (min-width: v.$bp-sm) {
+      height: 64px;
+    }
+  }
+
+  // The same small uppercase label the rest of the site uses for this job, only
+  // tracked wider — it is standing in for a heading here, and the extra space
+  // is what gives it that weight without a larger size.
+  &__label-text {
+    font-size: 0.625rem; // 10px
+    font-weight: 600;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    // Tracking pushes the last letter away from its own space; this pulls the
+    // block back onto the centre line.
+    text-indent: 0.34em;
+    text-shadow: 0 2px 10px rgb(0 0 0 / 60%);
+  }
+
+  // ---- Featured book ------------------------------------------------------
+
+  &__featured {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto 72px;
+    text-align: center;
+
+    @media (min-width: v.$bp-sm) {
+      flex-direction: row;
+      // Centres the cover and the words as one pair. Without it the pair sits
+      // at the left of the 900px box and the block reads as off-centre even
+      // though the box itself is centred.
+      justify-content: center;
+      gap: 56px;
+      margin-bottom: 120px;
+      text-align: left;
+    }
+  }
+
+  // Never shrinks, and lifts off the photograph on a deep soft shadow rather
+  // than a border — the band has no edges anywhere else.
+  &__featured-cover {
+    flex: none;
+    display: block;
+
+    img {
+      width: 172px;
+      height: 188px;
+      object-fit: cover;
+      box-shadow: 0 30px 64px rgb(0 0 0 / 62%);
+
+      @media (min-width: v.$bp-sm) {
+        width: 210px;
+        height: 230px;
+      }
+    }
+  }
+
+  &__featured-text {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    max-width: 400px;
+
+    @media (min-width: v.$bp-sm) {
+      align-items: flex-start;
+    }
+  }
+
+  // Playfair and the colour come from the global h2 rule; the display size and
+  // the lighter weight are the band's own, the same licence the hero's title
+  // takes. The global step would be too quiet for the one book the section is
+  // built around.
+  &__featured-title {
+    font-size: clamp(2rem, 4vw, 2.375rem); // 32px → 38px
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: inherit;
+  }
+
+  // Deliberately below the site's smallest body step. The whole stack — byline,
+  // title, blurb, call to action — is meant to sit within the height of the
+  // cover beside it, and at the body size it runs well past the bottom of the
+  // photograph of the book it is describing.
+  &__blurb {
+    font-size: 0.625rem; // 10px
+    line-height: 1.7;
+    opacity: 0.82;
+    text-wrap: pretty;
+  }
+
+  // ---- Shared call to action ----------------------------------------------
+
+  // The hero's treatment, because it is the hero's situation: type on a
+  // photograph. Glass rather than a plate, so the picture reads through it
+  // instead of a solid block punching a hole in the band.
+  //
+  // These are the three custom properties the Button component exposes for
+  // exactly this, set to the same mixes the hero sets them to — so the two
+  // calls to action on the homepage that sit over a photograph are the same
+  // button behaving the same way, not two lookalikes maintained separately.
+  // A translucent fill firms up on hover rather than softening, which is why
+  // Button takes the hover colour as its own property instead of deriving one.
+  &__cta {
+    --button-bg: #{$glass-fill};
+    --button-fg: var(--books-fg);
+    --button-bg-hover: #{$glass-fill-hover};
+
+    align-self: center;
+    // 44px stays on a phone, where this is the band's primary action and a
+    // finger's target. It reads smaller through the tighter box rather than a
+    // shorter one — dropping below 44 here would start costing mis-taps.
+    min-height: 44px;
+    padding: 9px 17px;
+    font-size: 0.5625rem; // 9px
+    border: 1px solid $glass-edge;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    @media (min-width: v.$bp-sm) {
+      // No finger, so no minimum to hold.
+      align-self: flex-start;
+      min-height: 36px;
+      padding: 10px 22px;
+    }
+  }
+
+  // ---- The rest of the collection -----------------------------------------
+
+  // Mobile-first: one centred column, each entry keeping its cover-left,
+  // words-right pairing, separated by a hairline.
+  &__shelf {
+    display: grid;
+    gap: 26px;
+    justify-content: center;
+    margin: 0 auto;
+
+    // 1fr auto 1fr, not three content-sized columns. Only the middle track is
+    // sized to its book; the two beside it are equal, which is what puts the
+    // middle book exactly on the page's centre line however much or little the
+    // other two contain. Three auto columns centre the row as a whole, and the
+    // middle book then sits wherever the differing widths leave it.
+    //
+    // The gap is fluid because the row needs roughly 1100px to hold 120px
+    // gutters, which falls between the project's breakpoints. Rather than add a
+    // fourth breakpoint for one component, it opens from a workable 48px at
+    // $bp-md to the full 120px once there is room.
+    @media (min-width: v.$bp-md) {
+      grid-template-columns: 1fr auto 1fr;
+      // Deliberately NOT align-items: start. The three entries stretch to the
+      // tallest of them, which is what lets each one push its call to action to
+      // its own bottom edge and have all three land on the same line. Started
+      // at the top instead, a two-line title in one entry drops its Ver libro
+      // below the others.
+      gap: clamp(48px, 6vw, 120px);
+
+      // The outer two hug the middle rather than drifting out to the window's
+      // edges: the first ends where its track ends, the third begins where its
+      // track begins, so they grow away from the centre by the same amount.
+      .book:first-child {
+        justify-self: end;
+      }
+
+      .book:last-child {
+        justify-self: start;
+      }
+    }
+  }
+}
+
+// One book on the shelf: a small cover beside its title.
+//
+// The whole entry is clickable. `position: relative` is half of that — the call
+// to action's ::after stretches over this box, so a click anywhere on the card
+// follows the one link the card contains.
+.book {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  // Stretch, so the text column can fill the row's height and push its call to
+  // action to the bottom. See the grid's note about aligning all three.
+  align-items: stretch;
+
+  // The hairline only exists in the stacked layout, where the entries follow
+  // one another down the page and need separating. Across a row they already
+  // are.
+  & + & {
+    padding-top: 26px;
+    border-top: 1px solid color-mix(in srgb, var(--books-fg) 16%, transparent);
+  }
+
+  @media (min-width: v.$bp-md) {
+    & + & {
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
+
+  // Fixed, and not stretched by the row: only the words grow.
+  &__cover {
+    flex: none;
+    align-self: flex-start;
+    width: 74px;
+    height: 110px;
+    object-fit: cover;
+    box-shadow: 0 10px 26px rgb(0 0 0 / 48%);
+  }
+
+  &__text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  // Below the global h3 step on purpose. These sit beside a 74px cover, and at
+  // 28px the title would overpower the thing it names.
+  &__title {
+    font-size: 1rem; // 16px
+    font-weight: 400;
+    line-height: 1.3;
+    color: inherit;
+  }
+
+  &__subtitle {
+    font-size: 0.75rem; // 12px
+    line-height: 1.5;
+    opacity: 0.68;
+
+    // Only where there is a button beneath it to be separated from. On a phone
+    // the subtitle is the last thing in the entry and this would just be a
+    // trailing gap.
+    @media (min-width: v.$bp-sm) {
+      // Guarantees clear air whatever the auto margin below does. With the
+      // column's own gap it is the closest the button can ever sit; usually the
+      // auto margin pushes it further down still.
+      margin-bottom: 16px;
+    }
+  }
+
+  // Two different things by width, not one shared between them.
+  //
+  // A plain link rather than the Button component. On a phone this is an
+  // invisible sheet over the whole entry, and a button stripped down to that
+  // keeps fighting the styling it exists to provide — its hover fill in
+  // particular, which a tap on a touch screen switches on and leaves on. A link
+  // has nothing to strip; the desktop button is drawn onto it instead.
+  //
+  // Mobile-first, so the sheet is the base and the button arrives at the
+  // breakpoint, the project's min-width-only rule either way.
+  &__cta {
+    position: absolute;
+    inset: 0;
+    // Above the cover and the words, both of which are static, so the tap lands
+    // on the link wherever it falls.
+    z-index: 1;
+    text-decoration: none;
+
+    // Nothing is drawn, so the focus ring is the only thing marking this as a
+    // link. It outlines the whole entry, which is exactly what the link is.
+    &:focus-visible {
+      outline: 2px solid var(--books-fg);
+      outline-offset: 4px;
+    }
+
+    // Desktop: a square glass button, the same treatment as the featured
+    // book's and built from the same three values, only tighter — these three
+    // are secondary to it and sit beside a 74px cover.
+    @media (min-width: v.$bp-sm) {
+      position: static;
+      display: inline-flex;
+      align-items: center;
+      // Fills whatever height the tallest entry in the row leaves over, which
+      // is what puts all three buttons on one line.
+      margin-top: auto;
+      min-height: 24px;
+      padding: 6px 12px;
+      font-size: 0.4375rem; // 7px
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--books-fg);
+      text-transform: uppercase;
+      background: $glass-fill;
+      border: 1px solid $glass-edge;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      transition: background 0.25s;
+
+      &:hover {
+        background: $glass-fill-hover;
+      }
+
+      // The rest of the card. Stretching the link rather than wrapping the card
+      // in one keeps the markup valid — a link cannot contain another link —
+      // and leaves the button as the visible affordance while the whole entry
+      // stays clickable, as it is on the phone.
+      &::after {
+        position: absolute;
+        inset: 0;
+        content: '';
+      }
+    }
+  }
+
+  // The words inside the button. Hidden on a phone, where there is no button to
+  // put them in; the link's aria-label carries the name either way.
+  &__cta-label {
+    display: none;
+
+    @media (min-width: v.$bp-sm) {
+      display: inline;
+    }
+  }
+}
+
+// No drift — the photograph sits where it was framed. The band's arrival is the
+// shared .reveal, which answers the same preference in _motion.scss.
+@media (prefers-reduced-motion: reduce) {
+  .books__photo {
+    transform: none;
+  }
+
+  .books__cta {
+    transition: none;
+  }
+}
