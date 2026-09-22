@@ -1,5 +1,13 @@
 @use '../../styles/variables' as v;
 
+// The glass treatment's three values, written once. The featured book hands
+// them to the Button component as custom properties; the shelf's plain link
+// uses them directly. Two consumers, one set of numbers, so the buttons in this
+// band cannot drift apart.
+$glass-fill: color-mix(in srgb, var(--books-fg) 16%, transparent);
+$glass-fill-hover: color-mix(in srgb, var(--books-fg) 30%, transparent);
+$glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
+
 // The Libros band: a landscape photograph at the top that dissolves into flat
 // black by its lower half, with the featured book in the bright part and the
 // rest of the collection on the black below.
@@ -250,9 +258,9 @@
   // A translucent fill firms up on hover rather than softening, which is why
   // Button takes the hover colour as its own property instead of deriving one.
   &__cta {
-    --button-bg: color-mix(in srgb, var(--books-fg) 16%, transparent);
+    --button-bg: #{$glass-fill};
     --button-fg: var(--books-fg);
-    --button-bg-hover: color-mix(in srgb, var(--books-fg) 30%, transparent);
+    --button-bg-hover: #{$glass-fill-hover};
 
     align-self: center;
     // 44px stays on a phone, where this is the band's primary action and a
@@ -261,7 +269,7 @@
     min-height: 44px;
     padding: 9px 17px;
     font-size: 0.5625rem; // 9px
-    border: 1px solid color-mix(in srgb, var(--books-fg) 40%, transparent);
+    border: 1px solid $glass-edge;
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
 
@@ -389,63 +397,55 @@
 
   // Two different things by width, not one shared between them.
   //
-  // Mobile-first, so the base is the phone's: no button at all. The link simply
-  // covers the whole entry and shows nothing of itself, so tapping the cover or
-  // the words goes to the book. The project only ever uses min-width queries,
-  // so the desktop's button is restored inside the breakpoint below rather than
-  // the phone's version hanging off a max-width.
+  // A plain link rather than the Button component. On a phone this is an
+  // invisible sheet over the whole entry, and a button stripped down to that
+  // keeps fighting the styling it exists to provide — its hover fill in
+  // particular, which a tap on a touch screen switches on and leaves on. A link
+  // has nothing to strip; the desktop button is drawn onto it instead.
+  //
+  // Mobile-first, so the sheet is the base and the button arrives at the
+  // breakpoint, the project's min-width-only rule either way.
   &__cta {
-    // Both transparent, so the entry never changes appearance. `background:
-    // none` alone is not enough: Button paints var(--button-bg-hover) from a
-    // `.button:hover` rule, which outranks a plain class, and on a touch screen
-    // hover is a state a tap enters and does not leave. That left the invisible
-    // link washing the whole entry in near-black on tap and keeping it there.
-    --button-bg: transparent;
-    --button-bg-hover: transparent;
-    --button-fg: var(--books-fg);
-
     position: absolute;
     inset: 0;
     // Above the cover and the words, both of which are static, so the tap lands
     // on the link wherever it falls.
     z-index: 1;
-    min-height: 0;
-    padding: 0;
-    background: none;
-    border: 0;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    text-decoration: none;
 
-    // Nothing is drawn, so the focus ring is the only thing that shows this is
-    // a link at all. It outlines the whole entry, which is exactly what the
-    // link now is.
+    // Nothing is drawn, so the focus ring is the only thing marking this as a
+    // link. It outlines the whole entry, which is exactly what the link is.
     &:focus-visible {
       outline: 2px solid var(--books-fg);
       outline-offset: 4px;
     }
 
-    // Desktop: a real button again, square and glass like the featured book's,
-    // only tighter — these three are secondary to it and sit beside a 74px
-    // cover. It is the shared Button component underneath, so most of the
-    // treatment is the component's own and only what the phone stripped needs
-    // putting back.
+    // Desktop: a square glass button, the same treatment as the featured
+    // book's and built from the same three values, only tighter — these three
+    // are secondary to it and sit beside a 74px cover.
     @media (min-width: v.$bp-sm) {
-      --button-bg: color-mix(in srgb, var(--books-fg) 16%, transparent);
-      --button-bg-hover: color-mix(in srgb, var(--books-fg) 30%, transparent);
-      --button-fg: var(--books-fg);
-
       position: static;
       display: inline-flex;
+      align-items: center;
       // Fills whatever height the tallest entry in the row leaves over, which
       // is what puts all three buttons on one line.
       margin-top: auto;
       min-height: 24px;
       padding: 6px 12px;
       font-size: 0.4375rem; // 7px
+      font-weight: 600;
       letter-spacing: 0.18em;
-      border: 1px solid color-mix(in srgb, var(--books-fg) 40%, transparent);
+      color: var(--books-fg);
+      text-transform: uppercase;
+      background: $glass-fill;
+      border: 1px solid $glass-edge;
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
+      transition: background 0.25s;
+
+      &:hover {
+        background: $glass-fill-hover;
+      }
 
       // The rest of the card. Stretching the link rather than wrapping the card
       // in one keeps the markup valid — a link cannot contain another link —

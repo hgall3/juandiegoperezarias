@@ -173,16 +173,21 @@ function BooksBand() {
                   <p className="book__subtitle">{book.subtitle}</p>
                 )}
 
-                {/* The whole entry is this one link, at both widths — on a
-                    phone the link itself covers the card and shows nothing of
-                    itself, and on a desktop a stretched ::after does the same
-                    job behind a visible button.
+                {/* A plain link, not the Button component. On a phone this is
+                    an invisible sheet over the whole entry, and stripping a
+                    button down to that meant fighting the styling it exists to
+                    provide — its hover fill in particular, which a tap on a
+                    touch screen turns on and leaves on. There is nothing to
+                    strip here; the desktop button is drawn on instead.
+
+                    Either way the whole entry is this one link: the sheet on a
+                    phone, a stretched ::after behind the button on a desktop.
 
                     The name is on the link rather than in its text because the
                     text is not always there. Spelled out with the title, since
                     three identical "Ver libro" links tell a screen reader
                     nothing about which book each one leads to. */}
-                <Button
+                <Link
                   to={book.href}
                   className="book__cta"
                   aria-label={`Ver libro — ${book.title}`}
@@ -190,7 +195,7 @@ function BooksBand() {
                   <span className="book__cta-label" aria-hidden="true">
                     Ver libro
                   </span>
-                </Button>
+                </Link>
               </div>
             </article>
           ))}
