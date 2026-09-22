@@ -3,14 +3,25 @@
 // Mobile-first: everything stacks, and the two-column row only appears from
 // $bp-md up.
 //
-// The footer sits on the page's own background, so the separation from the
-// content above is a hairline in --color-border rather than a second ground.
+// The footer is dark on every page, so the homepage can run black from the
+// Libros band down through the bottom of the document without a paper-coloured
+// strip interrupting it.
+//
+// Its colours are the page's two used the other way round, the way the hero and
+// the biography band do it, rather than a second set of values. The hairlines
+// are the same ink at low opacity, so they follow whatever the foreground is
+// instead of being pinned to a grey that suits one ground only.
 //
 // No font sizes are set in this file. The labels, the contact lines and the
 // small print all carry a global class — .text-small and .text-xs — so the
 // footer follows the type scale instead of keeping a private copy of it.
 .footer {
-  border-top: 1px solid var(--color-border);
+  --footer-fg: var(--color-bg);
+  --footer-line: color-mix(in srgb, var(--footer-fg) 22%, transparent);
+
+  color: var(--footer-fg);
+  background: #000;
+  border-top: 1px solid var(--footer-line);
 
   // Both dividers run the full width of the window, edge to edge. That is why
   // the padding and the 1126px cap live on the inner wrapper and not here: on
@@ -53,7 +64,7 @@
     margin-bottom: 20px;
     font-family: v.$font-body;
     font-weight: 600;
-    color: var(--color-text);
+    color: inherit;
     text-transform: uppercase;
     letter-spacing: 0.18em;
     opacity: 0.75;
@@ -67,7 +78,7 @@
   }
 
   &__line {
-    color: var(--color-heading);
+    color: inherit;
     text-decoration: none;
 
     &:hover {
@@ -100,22 +111,24 @@
     width: 40px;
     height: 40px;
     font-size: 15px;
-    color: var(--color-heading);
-    border: 1px solid var(--color-border);
+    color: inherit;
+    border: 1px solid var(--footer-line);
     border-radius: 50%;
     transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 
+    // Filled on hover, the ground and the ink swapping round — which on a dark
+    // footer means the icon goes black inside a light disc.
     &:hover {
-      color: var(--color-bg);
-      background: var(--color-heading);
-      border-color: var(--color-heading);
+      color: #000;
+      background: var(--footer-fg);
+      border-color: var(--footer-fg);
     }
   }
 
   // The rule above this row spans the whole window; only its text is held to
   // the 1126px column by .footer__inner.
   &__bottom {
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--footer-line);
 
     .footer__inner {
       display: flex;

@@ -137,3 +137,52 @@
     }
   }
 }
+
+// A band on a dark ground. Its colours are the page's two used the other way
+// round, the way the hero does it, rather than a second set of values that a
+// future theme change would have to remember to follow.
+.feature--inverted {
+  color: var(--color-bg);
+
+  // The global h2 rule paints the heading in the page's ink, which on black is
+  // invisible. Taking the band's own colour instead.
+  .feature__title,
+  .feature__cta {
+    color: inherit;
+  }
+
+  // Held back from full strength, as it is on paper — de-emphasis as opacity on
+  // whatever the ink happens to be, not a grey pinned to one ground.
+  .feature__body {
+    opacity: 0.82;
+  }
+
+  // The eyebrow and the rule under the link stay the muted red. It is the one
+  // colour on the site and it carries on black as well as on paper, so there is
+  // nothing to swap.
+}
+
+// A title that must hold one line: a person's name, where a break would read as
+// a mistake rather than a line ending.
+//
+// The cap that shapes the other titles into two lines has to go with it, and
+// the size then has to follow the column instead of the type scale — the text
+// column is at its narrowest at $bp-md, where the grid gives it well under half
+// the band and then insets it by 96px, and it roughly doubles at $bp-lg.
+.feature--nowrap-title {
+  .feature__title {
+    max-width: none;
+    white-space: nowrap;
+    // The column is the full width of the phone here, so this only has to beat
+    // the very narrowest screens.
+    font-size: min(2rem, 7vw);
+
+    @media (min-width: v.$bp-md) {
+      font-size: 1.5rem; // 24px — about 260px of name in a 308px column
+    }
+
+    @media (min-width: v.$bp-lg) {
+      font-size: 2.25rem; // 36px — the column is twice the width by here
+    }
+  }
+}

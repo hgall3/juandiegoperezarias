@@ -45,7 +45,7 @@ function Home() {
           repeat rather than a pair. Outside .home for the same reason the band
           above it is: it sets its own spacing against the black it follows. */}
       <section className="biography-band">
-        <Feature item={biographyBand} reversed />
+        <Feature item={biographyBand} reversed inverted nowrapTitle />
       </section>
     </>
   )

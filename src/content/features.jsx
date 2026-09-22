@@ -49,15 +49,17 @@ export const features = [
 // It is the same shape, though, because it is the same component — a photograph
 // beside a piece of writing.
 //
-// The name is written without an accent here, as it is everywhere in the
-// project: Perez, never Pérez.
+// The name carries its accent here — "Pérez" — which is the exception to the
+// project's rule, not a slip. Everywhere else it stays "Perez": the repository,
+// the domain, page titles, meta descriptions and body copy. In the biography it
+// matters, so the heading below is the one place that spells it in full.
 export const biographyBand = {
   id: 'biografia',
   src: jdTrasCamara1500,
   srcSet: `${jdTrasCamara900} 900w, ${jdTrasCamara1500} 1500w`,
-  alt: 'Fotografía en blanco y negro: tres niños descalzos, de pie sobre un montículo de tierra, se inclinan imitando la postura de Juan Diego Perez Arias, que filma encorvado tras una cámara de vídeo sobre trípode, con colinas al fondo.',
+  alt: 'Fotografía en blanco y negro: tres niños descalzos, de pie sobre un montículo de tierra, se inclinan imitando la postura de Juan Diego Pérez Arias, que filma encorvado tras una cámara de vídeo sobre trípode, con colinas al fondo.',
   breadcrumb: 'Biografía',
-  title: 'Juan Diego Perez Arias',
+  title: 'Juan Diego Pérez Arias',
   text: 'Creció en el campo en Cunucbamba, cerca de Tumbaco. Entre bosques de algarrobo y eucalipto; rodeado de huiracchuros, quilicos, guabos, naranjos y pencos siempre respiró naturaleza, aire puro, estrellas y libros.',
   // No `eventualTo` here: unlike the essay above, this page is built.
   action: {
