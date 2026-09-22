@@ -214,14 +214,6 @@
     }
   }
 
-  &__byline {
-    font-size: 0.625rem; // 10px
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    opacity: 0.75;
-  }
-
   // Playfair and the colour come from the global h2 rule; the display size and
   // the lighter weight are the band's own, the same licence the hero's title
   // takes. The global step would be too quiet for the one book the section is
@@ -263,10 +255,11 @@
     --button-bg-hover: color-mix(in srgb, var(--books-fg) 30%, transparent);
 
     align-self: center;
-    // 44px stays on a phone, where this is a finger's target. It reads smaller
-    // than the hero's through the tighter box, not a smaller label.
+    // 44px stays on a phone, where this is the band's primary action and a
+    // finger's target. It reads smaller through the tighter box rather than a
+    // shorter one — dropping below 44 here would start costing mis-taps.
     min-height: 44px;
-    padding: 10px 20px;
+    padding: 9px 17px;
     font-size: 0.5625rem; // 9px
     border: 1px solid color-mix(in srgb, var(--books-fg) 40%, transparent);
     backdrop-filter: blur(4px);
@@ -302,7 +295,11 @@
     // $bp-md to the full 120px once there is room.
     @media (min-width: v.$bp-md) {
       grid-template-columns: 1fr auto 1fr;
-      align-items: start;
+      // Deliberately NOT align-items: start. The three entries stretch to the
+      // tallest of them, which is what lets each one push its call to action to
+      // its own bottom edge and have all three land on the same line. Started
+      // at the top instead, a two-line title in one entry drops its Ver libro
+      // below the others.
       gap: clamp(48px, 6vw, 120px);
 
       // The outer two hug the middle rather than drifting out to the window's
@@ -320,10 +317,17 @@
 }
 
 // One book on the shelf: a small cover beside its title.
+//
+// The whole entry is clickable. `position: relative` is half of that — the call
+// to action's ::after stretches over this box, so a click anywhere on the card
+// follows the one link the card contains.
 .book {
+  position: relative;
   display: flex;
   gap: 16px;
-  align-items: flex-start;
+  // Stretch, so the text column can fill the row's height and push its call to
+  // action to the bottom. See the grid's note about aligning all three.
+  align-items: stretch;
 
   // The hairline only exists in the stacked layout, where the entries follow
   // one another down the page and need separating. Across a row they already
@@ -340,22 +344,21 @@
     }
   }
 
+  // Fixed, and not stretched by the row: only the words grow.
   &__cover {
     flex: none;
-    display: block;
-
-    img {
-      width: 74px;
-      height: 110px;
-      object-fit: cover;
-      box-shadow: 0 10px 26px rgb(0 0 0 / 48%);
-    }
+    align-self: flex-start;
+    width: 74px;
+    height: 110px;
+    object-fit: cover;
+    box-shadow: 0 10px 26px rgb(0 0 0 / 48%);
   }
 
   &__text {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     align-items: flex-start;
   }
 
@@ -369,24 +372,50 @@
   }
 
   &__subtitle {
+    // Guarantees clear air under the subtitle whatever the auto margin below
+    // does. Together with the column's own gap it is the minimum distance the
+    // call to action can ever sit at; usually it sits further down still.
+    margin-bottom: 16px;
     font-size: 0.75rem; // 12px
     line-height: 1.5;
     opacity: 0.68;
   }
 
-  // Tighter again than the featured book's. That one is the section's primary
-  // action; these three are secondary and sit beside a 74px cover. Only the box
-  // shrinks — the label and the glass are the same, so they still read as the
-  // same button.
+  // Not the featured book's glass box — that size and treatment belong to the
+  // one book the section is built around. This is the quiet underlined link the
+  // featured bands use for "Leer más", in the same muted red, so a secondary
+  // action looks the same wherever it appears on the site.
   //
-  // The phone keeps the full 44px it inherits: a secondary action is still
-  // something a thumb has to hit.
-  .books__cta {
+  // Smaller than that one is, though: it sits beside a 74px cover, three to a
+  // row.
+  &__cta {
+    display: inline-block;
+    // Fills whatever height the tallest entry in the row leaves over, which is
+    // what puts all three calls to action on one line.
+    margin-top: auto;
+    padding-bottom: 5px;
+    font-size: 0.4375rem; // 7px
+    font-weight: 600;
     letter-spacing: 0.18em;
+    color: var(--books-fg);
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-accent);
+    transition:
+      color 0.25s,
+      border-color 0.25s;
 
-    @media (min-width: v.$bp-sm) {
-      min-height: 30px;
-      padding: 8px 15px;
+    // The rest of the card. Stretching the link rather than wrapping the card
+    // in one keeps the markup valid — a link cannot contain another link — and
+    // leaves the underlined words as the visible affordance.
+    &::after {
+      position: absolute;
+      inset: 0;
+      content: '';
+    }
+
+    &:hover {
+      color: var(--color-accent);
     }
   }
 }

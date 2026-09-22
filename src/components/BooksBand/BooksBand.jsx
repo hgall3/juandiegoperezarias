@@ -133,8 +133,6 @@ function BooksBand() {
           </Link>
 
           <div className="books__featured-text">
-            <p className="books__byline">{featuredBook.byline}</p>
-
             <h2 className="books__featured-title">{featuredBook.title}</h2>
 
             <p className="books__blurb">{featuredBook.blurb}</p>
@@ -152,21 +150,17 @@ function BooksBand() {
         <div className="books__shelf">
           {shelfBooks.map((book) => (
             <article className="book" key={book.slug}>
-              <Link
-                to={book.href}
+              {/* Decorative: the link below carries the book's name, and the
+                  cover is a picture of the same thing. */}
+              <img
                 className="book__cover"
-                tabIndex={-1}
-                aria-hidden="true"
-              >
-                <img
-                  src={book.cover}
-                  alt=""
-                  width="74"
-                  height="110"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </Link>
+                src={book.cover}
+                alt=""
+                width="74"
+                height="110"
+                loading="lazy"
+                decoding="async"
+              />
 
               <div className="book__text">
                 <h3 className="book__title">{book.title}</h3>
@@ -179,10 +173,15 @@ function BooksBand() {
                   <p className="book__subtitle">{book.subtitle}</p>
                 )}
 
-                <Button to={book.href} className="books__cta">
+                {/* The whole entry is this one link: its ::after is stretched
+                    over the card, so the cover and the title lead to the book
+                    too. One link rather than several to the same page, which
+                    keeps the entry a single stop for anyone tabbing through
+                    and still leaves Ver libro as the visible affordance. */}
+                <Link to={book.href} className="book__cta">
                   Ver libro
                   <span className="sr-only"> — {book.title}</span>
-                </Button>
+                </Link>
               </div>
             </article>
           ))}
