@@ -143,7 +143,6 @@
     font-size: 0.5625rem; // 9px
     border: 1px solid color-mix(in srgb, var(--hero-fg) 40%, transparent);
     backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
 
     @media (min-width: v.$bp-sm) {
       // No finger, so no minimum.

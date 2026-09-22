@@ -7,8 +7,11 @@
 // The bar and the panel share one background treatment.
 @mixin surface {
   background: color-mix(in srgb, var(--color-bg) 96%, transparent);
+  // No -webkit- twin here, or anywhere. The build's minifier treats the two
+  // spellings as one property and keeps whichever comes last, so writing the
+  // prefix by hand deleted the standard one and cost Firefox the blur. Left
+  // alone it adds the prefix itself, for the browsers that need it.
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px); // Safari still wants the prefix.
   border-bottom: 1px solid color-mix(in srgb, var(--color-heading) 12%, transparent);
 }
 

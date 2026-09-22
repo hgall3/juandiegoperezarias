@@ -80,6 +80,14 @@ picked. Line heights stay unitless ratios so they hold when a size steps up at
 the breakpoint. Components should rely on the base
 element styles rather than restating font sizes.
 
+**Never hand-write a vendor prefix.** The build minifies CSS with
+`lightningcss`, which adds whatever prefixes the browser targets need. It also
+treats a prefixed property and its standard spelling as the same property, so
+writing both leaves only whichever came last — a hand-written
+`-webkit-backdrop-filter` after `backdrop-filter` silently deleted the standard
+one and cost Firefox the blur on the navbar, the hero's button and the Libros
+band. Write the standard property alone and let the build do the rest.
+
 Fonts are **self-hosted** through [`@fontsource`](https://fontsource.org) packages,
 never loaded from a CDN — a Google Fonts `<link>` would expose every visitor to a
 third-party request. Each weight is imported individually at the top of `App.jsx`
