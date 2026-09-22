@@ -138,30 +138,6 @@
   }
 }
 
-// A band on a dark ground. Its colours are the page's two used the other way
-// round, the way the hero does it, rather than a second set of values that a
-// future theme change would have to remember to follow.
-.feature--inverted {
-  color: var(--color-bg);
-
-  // The global h2 rule paints the heading in the page's ink, which on black is
-  // invisible. Taking the band's own colour instead.
-  .feature__title,
-  .feature__cta {
-    color: inherit;
-  }
-
-  // Held back from full strength, as it is on paper — de-emphasis as opacity on
-  // whatever the ink happens to be, not a grey pinned to one ground.
-  .feature__body {
-    opacity: 0.82;
-  }
-
-  // The eyebrow and the rule under the link stay the muted red. It is the one
-  // colour on the site and it carries on black as well as on paper, so there is
-  // nothing to swap.
-}
-
 // A title that must hold one line: a person's name, where a break would read as
 // a mistake rather than a line ending.
 //

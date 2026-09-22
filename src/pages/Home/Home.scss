@@ -39,11 +39,9 @@
 
 // The author's band, below the Libros band and outside .home.
 //
-// Black, continuing the ground the Libros band ends on rather than returning to
-// paper between them — the page runs dark from there down through the footer,
-// so there is no seam to hide and the two sections read as one stretch.
+// No ground of its own: the Libros band above now dissolves into paper rather
+// than black, so this simply carries on the same white down to the footer.
 .biography-band {
-  background: #000;
   padding: 72px 0 80px;
 
   @media (min-width: v.$bp-md) {

@@ -9,16 +9,9 @@ import './Feature.scss'
 // band stacks — only which grid column each one lands in. That keeps the
 // reading order the same for a screen reader whichever way the band faces.
 //
-// `inverted` is for a band sitting on a dark ground, and `nowrapTitle` for one
-// whose title must not break — a person's name, rather than a sentence that can
-// fall where it likes. They are separate switches because they are separate
-// decisions: a dark band's title may still wrap, and a light one's may not.
-function Feature({
-  item,
-  reversed = false,
-  inverted = false,
-  nowrapTitle = false,
-}) {
+// `nowrapTitle` is for a band whose title must hold one line — a person's name,
+// rather than a sentence that can fall where it likes.
+function Feature({ item, reversed = false, nowrapTitle = false }) {
   const { src, srcSet, alt, focus, breadcrumb, title, text, action } = item
   // The band rises into place whenever it is scrolled to, every time round.
   // The class is all this adds — the movement is in Feature.scss.
@@ -30,7 +23,6 @@ function Feature({
       className={[
         'feature',
         reversed && 'feature--reversed',
-        inverted && 'feature--inverted',
         nowrapTitle && 'feature--nowrap-title',
         revealed && 'is-revealed',
       ]

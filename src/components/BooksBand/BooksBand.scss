@@ -16,31 +16,22 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
 // rather than started on $section-inset — that inset lines up left-aligned
 // blocks, and there is nothing here to line up with.
 //
-// Its type sits on a photograph, so like the hero the foreground is the page's
-// ground colour used inverted by context rather than a literal white.
+// The two colours the whole band is built from: the ground the photograph
+// dissolves into, and the ink that has to read against it. Every gradient stop
+// below is a mix of the first, so flipping the band from light to dark is a
+// matter of swapping these two lines rather than rewriting a dozen stops.
 .books {
-  --books-fg: var(--color-bg);
+  --books-ground: var(--color-bg);
+  --books-fg: var(--color-heading);
 
   position: relative;
   overflow: hidden;
   padding: 130px 22px 52px;
 
-  // The band's own ground, beneath the photograph. It opens in the page's paper
-  // colour so the top edge melts into the section above with no visible seam,
-  // then falls to black well before the photograph's own fade has finished —
-  // whatever the photograph does, there is already black behind it.
-  //
-  // The middle tone is --color-heading rather than a new dark value: it is the
-  // near-black the site already owns, and at the speed this gradient moves the
-  // difference between one dark and another does not read.
-  background: linear-gradient(
-    to bottom,
-    var(--color-bg) 0%,
-    var(--color-bg) 6%,
-    var(--color-heading) 20%,
-    #000 40%,
-    #000 100%
-  );
+  // Flat, not a gradient. The band's ground is the page's own paper, so the top
+  // edge melts into the section above and the foot into the one below without
+  // anything having to fade between them.
+  background: var(--books-ground);
 
   @media (min-width: v.$bp-sm) {
     padding: 190px v.$space 64px;
@@ -73,9 +64,9 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
   &__radial {
     background: radial-gradient(
       circle at 50% 42%,
-      rgb(0 0 0 / 0%) 0%,
-      rgb(0 0 0 / 14%) 45%,
-      rgb(0 0 0 / 40%) 100%
+      transparent 0%,
+      color-mix(in srgb, var(--books-ground) 14%, transparent) 45%,
+      color-mix(in srgb, var(--books-ground) 40%, transparent) 100%
     );
   }
 
@@ -89,25 +80,25 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
   &__fade {
     background: linear-gradient(
       to bottom,
-      rgb(0 0 0 / 0%) 0%,
-      rgb(0 0 0 / 30%) 8%,
-      rgb(0 0 0 / 68%) 20%,
-      rgb(0 0 0 / 88%) 34%,
-      rgb(0 0 0 / 97%) 50%,
-      #000 62%,
-      #000 100%
+      transparent 0%,
+      color-mix(in srgb, var(--books-ground) 30%, transparent) 8%,
+      color-mix(in srgb, var(--books-ground) 68%, transparent) 20%,
+      color-mix(in srgb, var(--books-ground) 88%, transparent) 34%,
+      color-mix(in srgb, var(--books-ground) 97%, transparent) 50%,
+      var(--books-ground) 62%,
+      var(--books-ground) 100%
     );
 
     @media (min-width: v.$bp-sm) {
       background: linear-gradient(
         to bottom,
-        rgb(0 0 0 / 0%) 0%,
-        rgb(0 0 0 / 30%) 12%,
-        rgb(0 0 0 / 68%) 28%,
-        rgb(0 0 0 / 88%) 44%,
-        rgb(0 0 0 / 97%) 62%,
-        #000 76%,
-        #000 100%
+        transparent 0%,
+        color-mix(in srgb, var(--books-ground) 30%, transparent) 12%,
+        color-mix(in srgb, var(--books-ground) 68%, transparent) 28%,
+        color-mix(in srgb, var(--books-ground) 88%, transparent) 44%,
+        color-mix(in srgb, var(--books-ground) 97%, transparent) 62%,
+        var(--books-ground) 76%,
+        var(--books-ground) 100%
       );
     }
   }
@@ -137,8 +128,9 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
   }
 
   // Faint at the top and near-solid where it meets the word, so it reads as
-  // arriving rather than as a divider. The shadow is what keeps it visible if
-  // it happens to fall against a bright patch of sky.
+  // arriving rather than as a divider. The halo is what keeps it visible where
+  // it crosses a dark patch of the photograph — a glow of the ground, since the
+  // mark itself is now the dark one of the two.
   &__rule {
     width: 1px;
     height: 34px;
@@ -147,7 +139,7 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
       color-mix(in srgb, var(--books-fg) 8%, transparent),
       color-mix(in srgb, var(--books-fg) 85%, transparent)
     );
-    box-shadow: 0 0 12px rgb(0 0 0 / 55%);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--books-ground) 75%, transparent);
 
     @media (min-width: v.$bp-sm) {
       height: 64px;
@@ -165,7 +157,7 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
     // Tracking pushes the last letter away from its own space; this pulls the
     // block back onto the centre line.
     text-indent: 0.34em;
-    text-shadow: 0 2px 10px rgb(0 0 0 / 60%);
+    text-shadow: 0 2px 10px color-mix(in srgb, var(--books-ground) 80%, transparent);
   }
 
   // ---- Featured book ------------------------------------------------------
@@ -191,8 +183,10 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
     }
   }
 
-  // Never shrinks, and lifts off the photograph on a deep soft shadow rather
-  // than a border — the band has no edges anywhere else.
+  // Never shrinks, and lifts off the ground on a soft shadow rather than a
+  // border — the band has no edges anywhere else. Lighter than it would be on a
+  // dark ground: the same weight that reads as lift on black reads as grime on
+  // paper.
   &__featured-cover {
     flex: none;
     display: block;
@@ -201,7 +195,7 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
       width: 172px;
       height: 188px;
       object-fit: cover;
-      box-shadow: 0 30px 64px rgb(0 0 0 / 62%);
+      box-shadow: 0 22px 44px rgb(0 0 0 / 20%);
 
       @media (min-width: v.$bp-sm) {
         width: 210px;
@@ -358,7 +352,7 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
     width: 74px;
     height: 110px;
     object-fit: cover;
-    box-shadow: 0 10px 26px rgb(0 0 0 / 48%);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 16%);
   }
 
   &__text {
