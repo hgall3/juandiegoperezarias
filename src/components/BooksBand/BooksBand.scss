@@ -271,7 +271,6 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
     font-size: 0.5625rem; // 9px
     border: 1px solid $glass-edge;
     backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
 
     @media (min-width: v.$bp-sm) {
       // No finger, so no minimum to hold.
@@ -440,7 +439,6 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
       background: $glass-fill;
       border: 1px solid $glass-edge;
       backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
       transition: background 0.25s;
 
       &:hover {
