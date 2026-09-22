@@ -1,5 +1,9 @@
 @use '../../styles/variables' as v;
 
+// The space between the menu words. Named because the toggle beside them has to
+// match it, and the two would drift if it were written twice.
+$nav-gap: 28px;
+
 // Editorial navbar: black and white only. De-emphasis is opacity on the ink
 // colour rather than a grey value, so it tracks the ink instead of being pinned
 // to a grey that the tokens know nothing about.
@@ -10,7 +14,7 @@
   // Just enough to read as sitting on top of the hero rather than cut into it.
   // The heading colour at low alpha, so it is a soft dark shadow on paper and a
   // soft light glow on black without either being written out here.
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-bar);
   // No -webkit- twin here, or anywhere. The build's minifier treats the two
   // spellings as one property and keeps whichever comes last, so writing the
   // prefix by hand deleted the standard one and cost Firefox the blur. Left
@@ -61,10 +65,21 @@
     padding: 0 v.$space;
   }
 
-  &__actions {
+  // Everything that is not the signature. Keeping it to one element leaves the
+  // bar two children wide, so space-between holds the words against the right
+  // edge — which is what putting the toggle in its own third box undid.
+  &__right {
     display: flex;
     align-items: center;
-    gap: 2px;
+    // Two icon buttons here, whose 44px targets already hold them apart.
+    gap: 0;
+
+    @media (min-width: v.$bp-sm) {
+      // The toggle carries 13px of transparent target either side of its glyph,
+      // so the gap is the menu's own less that much. The mark then sits one
+      // nav-gap from "Obra", rather than one gap plus its own padding.
+      gap: $nav-gap - 13px;
+    }
   }
 
   &__brand {
@@ -95,7 +110,7 @@
 
     @media (min-width: v.$bp-sm) {
       display: flex;
-      gap: 28px;
+      gap: $nav-gap;
     }
   }
 

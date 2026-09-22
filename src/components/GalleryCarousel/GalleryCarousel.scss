@@ -241,15 +241,17 @@
     transition: background 0.7s v.$ease-reveal;
   }
 
+  // Centred in the card, not anchored to its foot: the words sit in the middle
+  // of the photograph both ways.
   &__caption {
     position: absolute;
-    right: 20px;
-    bottom: 18px;
-    left: 20px;
+    inset: 0;
     display: flex;
     flex-direction: column;
     gap: 6px;
     align-items: center;
+    justify-content: center;
+    padding: 20px;
     text-align: center;
     // Like the hero, the type here sits on a photograph — so it takes the
     // overlay ink, which is light whatever the page's own ground happens to be.
@@ -371,12 +373,7 @@
     // behind it there is nothing left to keep out of the way of, and the middle
     // is where the thumb that opened it already is.
     &__caption {
-      inset: 0;
       gap: 16px;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
       opacity: 0;
       translate: 0 10px;
       transition:

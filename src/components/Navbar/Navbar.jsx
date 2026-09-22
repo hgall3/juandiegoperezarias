@@ -201,34 +201,34 @@ function Navbar() {
             <Signature className="navbar__signature" />
           </Link>
 
-          <nav className="navbar__nav" aria-label="Principal">
-            {menus.map((menu) => (
-              <button
-                key={menu.id}
-                type="button"
-                className={`navbar__trigger${openMenu === menu.id ? ' is-open' : ''}`}
-                aria-expanded={openMenu === menu.id}
-                aria-controls={`nav-panel-${menu.id}`}
-                onClick={() =>
-                  setOpenMenu((current) =>
-                    current === menu.id ? null : menu.id,
-                  )
-                }
-              >
-                {menu.label}
-                <span className="navbar__caret" aria-hidden="true">
-                  ▾
-                </span>
-              </button>
-            ))}
-          </nav>
-
-          {/* Grouped so both sit at the right-hand end. The burger is the
-              phone's control and disappears on a desktop; the toggle stays at
-              every width, which is why it is last — the corner is its place
-              whether or not there is a burger beside it. */}
-          <div className="navbar__actions">
+          {/* One right-hand group, so the bar stays two children wide and the
+              words keep the right edge the way they always did. On a desktop it
+              holds the toggle and the menus; on a phone the menus are hidden and
+              it holds the toggle and the burger. */}
+          <div className="navbar__right">
             <ThemeToggle className="navbar__theme" />
+
+            <nav className="navbar__nav" aria-label="Principal">
+              {menus.map((menu) => (
+                <button
+                  key={menu.id}
+                  type="button"
+                  className={`navbar__trigger${openMenu === menu.id ? ' is-open' : ''}`}
+                  aria-expanded={openMenu === menu.id}
+                  aria-controls={`nav-panel-${menu.id}`}
+                  onClick={() =>
+                    setOpenMenu((current) =>
+                      current === menu.id ? null : menu.id,
+                    )
+                  }
+                >
+                  {menu.label}
+                  <span className="navbar__caret" aria-hidden="true">
+                    ▾
+                  </span>
+                </button>
+              ))}
+            </nav>
 
             <button
               type="button"

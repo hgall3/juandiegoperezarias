@@ -62,11 +62,18 @@
   --color-overlay: #08060d;
   --color-overlay-ink: #fff;
 
-  // Lifts a surface off what is behind it. The heading colour at low alpha, so
-  // it is a soft dark shadow on paper and a soft light glow on black without
-  // either being written out.
-  --shadow-soft: 0 10px 30px
-    color-mix(in srgb, var(--color-heading) 12%, transparent);
-  --shadow-lift: 0 14px 38px
-    color-mix(in srgb, var(--color-heading) 16%, transparent);
+  // Lifts a surface off what is behind it. The heading colour at some alpha, so
+  // it is a dark shadow on paper and a light glow on black without either being
+  // written out.
+  //
+  // Three weights, because they are doing different jobs. The bar only has to
+  // read as sitting on top of the hero; a gallery card has to find an edge
+  // against a ground that may be the same black as the photograph on it, which
+  // takes a good deal more.
+  --shadow-bar: 0 10px 28px
+    color-mix(in srgb, var(--color-heading) 20%, transparent);
+  --shadow-soft: 0 14px 40px
+    color-mix(in srgb, var(--color-heading) 32%, transparent);
+  --shadow-lift: 0 22px 56px
+    color-mix(in srgb, var(--color-heading) 45%, transparent);
 }
