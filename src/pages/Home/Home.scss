@@ -6,7 +6,11 @@
   padding: 56px 0;
 
   @media (min-width: v.$bp-md) {
-    padding: 96px 0;
+    // The foot is deeper than the head. This padding is the whole gap between
+    // the gallery, the last block in here, and the Libros band that follows
+    // outside — matching the interval before the gallery, so the two breaks
+    // read alike. Desktop only, as that change was.
+    padding: 96px 0 160px;
   }
 
   // Written as sibling rules rather than margins on the blocks themselves, so
