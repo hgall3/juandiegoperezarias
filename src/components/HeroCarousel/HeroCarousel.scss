@@ -1,10 +1,13 @@
 @use '../../styles/variables' as v;
 
 // The one place on the site where type sits on a photograph instead of on paper.
-// Its foreground is the page's ground colour, used inverted by context, so the
-// hero still speaks in the project's tokens rather than in literal white.
+//
+// Type over a photograph takes --color-overlay-ink, not --color-bg. They were
+// the same value while the page was white, but they mean different things: one
+// is the page's ground and the other is ink for a dark surface. Now that the
+// ground is black, using it here would paint the words black onto the picture.
 .hero {
-  --hero-fg: var(--color-bg);
+  --hero-fg: var(--color-overlay-ink);
   --hero-ink: var(--color-heading);
 
   position: relative;

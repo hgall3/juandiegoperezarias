@@ -12,16 +12,24 @@
 // Component .scss files never need it — custom properties resolve at runtime and
 // are globally available, so `var(--color-border)` just works anywhere.
 
+// Currently set dark: the whole site is black-ground, light-ink. There is still
+// exactly one set of values and no media query — the page simply has different
+// ones than it used to. Flipping back is this block and nothing else, which is
+// the entire reason the colours live here as custom properties.
 :root {
-  --color-text: #6b6375;
-  --color-heading: #08060d;
-  --color-bg: #fff;
+  --color-text: #a8a1b0;
+  --color-heading: #fff;
+  --color-bg: #000;
+  // Grey at low alpha, so it reads against either ground without changing.
   --color-border: rgba(128, 128, 128, 0.3);
 
   // The one colour on an otherwise black-and-white site: a muted red for the
   // headings inside the navbar panels. Desaturated on purpose — it should read
   // as a warm accent, not as a signal.
-  --color-accent: #8f4a45;
+  //
+  // Lifted for the dark ground. The same hue at the light theme's #8f4a45 goes
+  // muddy on black; this is that colour brought up in lightness, not a new one.
+  --color-accent: #c08079;
 
   // The full-screen mobile menu's ground and ink. Deliberately their own tokens
   // rather than --color-heading and --color-bg used back to front: the menu is
@@ -31,8 +39,8 @@
   --color-overlay: #08060d;
   --color-overlay-ink: #fff;
 
-  // A single value, not `light dark`: the pair invites the browser to darken
-  // scrollbars and form controls to match the OS, which is the same automatic
-  // behaviour by another route.
-  color-scheme: light;
+  // A single value, not `light dark`: the pair invites the browser to follow the
+  // OS for scrollbars and form controls, which is the same automatic behaviour
+  // by another route. It names the ground above, so it moves with it.
+  color-scheme: dark;
 }

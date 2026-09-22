@@ -224,9 +224,9 @@
     flex-direction: column;
     gap: 6px;
     align-items: flex-start;
-    // Like the hero, the type here sits on a photograph, so its colour is the
-    // page's ground used inverted by context rather than a literal white.
-    color: var(--color-bg);
+    // Like the hero, the type here sits on a photograph — so it takes the
+    // overlay ink, which is light whatever the page's own ground happens to be.
+    color: var(--color-overlay-ink);
   }
 
   // Playfair, like every other h-level line on the site — the global rules
@@ -364,7 +364,7 @@
       align-items: center;
       min-height: 44px;
       padding: 12px 22px;
-      border: 1px solid color-mix(in srgb, var(--color-bg) 55%, transparent);
+      border: 1px solid color-mix(in srgb, var(--color-overlay-ink) 55%, transparent);
       opacity: 1;
     }
 

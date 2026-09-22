@@ -65,8 +65,8 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
     background: radial-gradient(
       circle at 50% 42%,
       transparent 0%,
-      color-mix(in srgb, var(--books-ground) 5%, transparent) 50%,
-      color-mix(in srgb, var(--books-ground) 20%, transparent) 100%
+      color-mix(in srgb, var(--books-ground) 14%, transparent) 45%,
+      color-mix(in srgb, var(--books-ground) 40%, transparent) 100%
     );
   }
 
@@ -86,11 +86,11 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
     background: linear-gradient(
       to bottom,
       transparent 0%,
-      color-mix(in srgb, var(--books-ground) 6%, transparent) 14%,
-      color-mix(in srgb, var(--books-ground) 20%, transparent) 28%,
-      color-mix(in srgb, var(--books-ground) 55%, transparent) 42%,
-      color-mix(in srgb, var(--books-ground) 85%, transparent) 54%,
-      var(--books-ground) 64%,
+      color-mix(in srgb, var(--books-ground) 30%, transparent) 8%,
+      color-mix(in srgb, var(--books-ground) 68%, transparent) 20%,
+      color-mix(in srgb, var(--books-ground) 88%, transparent) 34%,
+      color-mix(in srgb, var(--books-ground) 97%, transparent) 50%,
+      var(--books-ground) 62%,
       var(--books-ground) 100%
     );
 
@@ -98,11 +98,11 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
       background: linear-gradient(
         to bottom,
         transparent 0%,
-        color-mix(in srgb, var(--books-ground) 6%, transparent) 22%,
-        color-mix(in srgb, var(--books-ground) 20%, transparent) 40%,
-        color-mix(in srgb, var(--books-ground) 55%, transparent) 56%,
-        color-mix(in srgb, var(--books-ground) 85%, transparent) 68%,
-        var(--books-ground) 78%,
+        color-mix(in srgb, var(--books-ground) 30%, transparent) 12%,
+        color-mix(in srgb, var(--books-ground) 68%, transparent) 28%,
+        color-mix(in srgb, var(--books-ground) 88%, transparent) 44%,
+        color-mix(in srgb, var(--books-ground) 97%, transparent) 62%,
+        var(--books-ground) 76%,
         var(--books-ground) 100%
       );
     }
@@ -200,7 +200,7 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
       width: 172px;
       height: 188px;
       object-fit: cover;
-      box-shadow: 0 22px 44px rgb(0 0 0 / 20%);
+      box-shadow: 0 30px 64px rgb(0 0 0 / 62%);
 
       @media (min-width: v.$bp-sm) {
         width: 210px;
@@ -357,7 +357,7 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
     width: 74px;
     height: 110px;
     object-fit: cover;
-    box-shadow: 0 8px 20px rgb(0 0 0 / 16%);
+    box-shadow: 0 10px 26px rgb(0 0 0 / 48%);
   }
 
   &__text {
