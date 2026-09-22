@@ -23,6 +23,10 @@
     height: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
+    // Centred unless an entry says otherwise. A photograph whose subject sits
+    // high in the frame — a portrait one, especially — loses its head to a
+    // centre crop, so the content decides where the crop should hold.
+    object-position: var(--feature-focus, center);
   }
 
   &__text {

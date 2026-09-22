@@ -36,3 +36,16 @@
     }
   }
 }
+
+// The author's band, below the Libros band and outside .home.
+//
+// Its own wrapper purely for the spacing: it follows a section that ends in
+// flat black, so the gap above it is where the page returns to paper, and it
+// needs clear air beneath before the footer's rule.
+.biography-band {
+  padding: 72px 0 80px;
+
+  @media (min-width: v.$bp-md) {
+    padding: 160px 0 128px;
+  }
+}

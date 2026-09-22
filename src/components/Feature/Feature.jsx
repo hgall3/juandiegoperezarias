@@ -9,7 +9,7 @@ import './Feature.scss'
 // band stacks — only which grid column each one lands in. That keeps the
 // reading order the same for a screen reader whichever way the band faces.
 function Feature({ item, reversed = false }) {
-  const { src, srcSet, alt, breadcrumb, title, text, action } = item
+  const { src, srcSet, alt, focus, breadcrumb, title, text, action } = item
   // The band rises into place whenever it is scrolled to, every time round.
   // The class is all this adds — the movement is in Feature.scss.
   const [ref, revealed] = useReveal()
@@ -27,12 +27,19 @@ function Feature({ item, reversed = false }) {
           space before it arrives and stops the text jumping. */}
       <img
         className="feature__image reveal"
+        // Which part of the photograph survives the crop. Only set where the
+        // middle is the wrong answer — the same per-image control the hero
+        // slides use, for the same reason.
+        style={{ '--feature-focus': focus }}
         src={src}
         srcSet={srcSet}
         sizes="(min-width: 1024px) 57vw, 100vw"
         alt={alt}
-        width="1500"
-        height="1000"
+        // The frame is 4:3 whatever the file is, so these describe the box the
+        // browser should reserve rather than the file's own dimensions. They
+        // are the same ratio, which is what stops the text jumping.
+        width="1200"
+        height="900"
         loading="lazy"
         decoding="async"
       />

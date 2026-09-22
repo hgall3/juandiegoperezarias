@@ -4,7 +4,7 @@ import Feature from '../../components/Feature/Feature.jsx'
 import GalleryCarousel from '../../components/GalleryCarousel/GalleryCarousel.jsx'
 import BooksBand from '../../components/BooksBand/BooksBand.jsx'
 import { heroSlides } from '../../content/heroSlides.jsx'
-import { features } from '../../content/features.jsx'
+import { features, biographyBand } from '../../content/features.jsx'
 import './Home.scss'
 
 function Home() {
@@ -38,6 +38,15 @@ function Home() {
           generous padding and has to run edge to edge so the black it ends in
           meets whatever follows with no paper-coloured strip between them. */}
       <BooksBand />
+
+      {/* The author, at the foot of the page. Reversed, so its photograph sits
+          on the opposite edge from the featured band far above — the two are
+          the only bands on the page and facing the same way would read as a
+          repeat rather than a pair. Outside .home for the same reason the band
+          above it is: it sets its own spacing against the black it follows. */}
+      <section className="biography-band">
+        <Feature item={biographyBand} reversed />
+      </section>
     </>
   )
 }
