@@ -10,7 +10,10 @@
 // small print all carry a global class — .text-small and .text-xs — so the
 // footer follows the type scale instead of keeping a private copy of it.
 .footer {
-  border-top: 1px solid var(--color-border);
+  // Not --color-border, which is a grey at low alpha and all but disappears
+  // against black. Mixing the heading colour instead gives a line that inverts
+  // with the mode and keeps the same presence in each.
+  border-top: 1px solid color-mix(in srgb, var(--color-heading) 26%, transparent);
 
   // Both dividers run the full width of the window, edge to edge. That is why
   // the padding and the 1126px cap live on the inner wrapper and not here: on

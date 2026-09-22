@@ -7,6 +7,10 @@
 // The bar and the panel share one background treatment.
 @mixin surface {
   background: color-mix(in srgb, var(--color-bg) 96%, transparent);
+  // Just enough to read as sitting on top of the hero rather than cut into it.
+  // The heading colour at low alpha, so it is a soft dark shadow on paper and a
+  // soft light glow on black without either being written out here.
+  box-shadow: var(--shadow-soft);
   // No -webkit- twin here, or anywhere. The build's minifier treats the two
   // spellings as one property and keeps whichever comes last, so writing the
   // prefix by hand deleted the standard one and cost Firefox the blur. Left
@@ -55,6 +59,12 @@
     justify-content: space-between;
     gap: v.$space;
     padding: 0 v.$space;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
   }
 
   &__brand {

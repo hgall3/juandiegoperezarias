@@ -233,14 +233,16 @@ $glass-edge: color-mix(in srgb, var(--books-fg) 40%, transparent);
     color: inherit;
   }
 
-  // Deliberately below the site's smallest body step. The whole stack — byline,
-  // title, blurb, call to action — is meant to sit within the height of the
-  // cover beside it, and at the body size it runs well past the bottom of the
-  // photograph of the book it is describing.
+  // Still under the body step, so the stack keeps within the height of the
+  // cover beside it, but no longer so small that it reads as fine print — this
+  // is the only description of the book the page gives. The extra weight does
+  // as much as the size: at this scale 400 goes thin and grey against a
+  // photograph.
   &__blurb {
-    font-size: 0.625rem; // 10px
-    line-height: 1.7;
-    opacity: 0.82;
+    font-size: 0.8125rem; // 13px
+    font-weight: 500;
+    line-height: 1.6;
+    opacity: 0.9;
     text-wrap: pretty;
   }
 

@@ -1,0 +1,50 @@
+@use '../../styles/variables' as v;
+
+// The light/dark switch, at the right-hand end of the navbar.
+//
+// Quiet on purpose: no plate, no border, no fill — the same treatment as the
+// hero's and the gallery's arrows, so it reads as one of the site's marks
+// rather than as a control bolted onto the bar. A 44px transparent hit area
+// around an 18px glyph keeps the target finger-sized while the mark stays
+// small.
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--color-heading);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  opacity: 0.7;
+  transition:
+    opacity 0.25s,
+    rotate 0.45s v.$ease-reveal;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    opacity: 1;
+    // A quarter turn as it lights up. The mode itself changes instantly; this
+    // is only the hover.
+    rotate: 12deg;
+  }
+}
+
+// The glyph swaps the moment the mode does, so there is nothing to animate
+// between — and a rotating icon is the kind of movement a reader who asked for
+// less of it means.
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle {
+    transition: none;
+
+    &:hover {
+      rotate: none;
+    }
+  }
+}

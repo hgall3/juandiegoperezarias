@@ -305,84 +305,91 @@ function GalleryCarousel() {
           Foto galería
         </h2>
 
-        {/* Hidden below $bp-sm, where swiping carries navigation instead. */}
-        <div className="gallery__arrows">
+      </header>
+
+      {/* Holds the arrows against the row rather than the heading, so they sit
+          over the photographs the way the hero's do. */}
+      <div className="gallery__viewport">
+        {/* Not merely dimmed at the ends — gone. An arrow that is visible but
+            does nothing still says there is more that way. Hidden below $bp-sm,
+            where swiping carries navigation instead. */}
+        {!atStart && (
           <button
             type="button"
-            className="gallery__arrow"
+            className="gallery__arrow gallery__arrow--prev"
             aria-label="Ver categorías anteriores"
-            disabled={atStart}
             onClick={() => scrollByCards(-1)}
           >
             <Chevron direction="prev" />
           </button>
+        )}
 
+        {!atEnd && (
           <button
             type="button"
-            className="gallery__arrow"
+            className="gallery__arrow gallery__arrow--next"
             aria-label="Ver más categorías"
-            disabled={atEnd}
             onClick={() => scrollByCards(1)}
           >
             <Chevron direction="next" />
           </button>
-        </div>
-      </header>
+        )}
 
-      <div
-        ref={trackRef}
-        className={`gallery__track reveal reveal--delayed${
-          dragging ? ' is-dragging' : ''
-        }`}
-        role="region"
-        aria-label="Categorías de la foto galería"
-        tabIndex={0}
-        onKeyDown={onKeyDown}
-        onFocusCapture={onFocusCapture}
-        onClickCapture={onClickCapture}
-        // Anchors and images are draggable by default, and the browser starting
-        // its own drag cancels the pointer stream this carousel runs on — so
-        // over a card, which is the whole surface, dragging would do nothing at
-        // all. Refusing the gesture here leaves the pointer events intact.
-        onDragStart={(event) => event.preventDefault()}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-      >
-        {galleryCards.map((card, position) => (
-          <Link
-            key={card.slug}
-            to={card.href}
-            data-slug={card.slug}
-            className={`gallery-card${
-              card.slug === openCard ? ' is-open' : ''
-            }`}
-            draggable="false"
-          >
-            <img
-              className="gallery-card__photo"
-              src={card.src}
-              srcSet={card.srcSet}
-              sizes="(min-width: 1440px) 380px, (min-width: 1024px) 340px, (min-width: 768px) 300px, 78vw"
-              alt={card.alt}
-              width="750"
-              height="1000"
-              // The first two are the ones on screen before anything is
-              // scrolled; the rest wait until they are approached.
-              loading={position < 2 ? 'eager' : 'lazy'}
-              decoding="async"
+        <div
+          ref={trackRef}
+          className={`gallery__track reveal reveal--delayed${
+            dragging ? ' is-dragging' : ''
+          }`}
+          role="region"
+          aria-label="Categorías de la foto galería"
+          tabIndex={0}
+          onKeyDown={onKeyDown}
+          onFocusCapture={onFocusCapture}
+          onClickCapture={onClickCapture}
+          // Anchors and images are draggable by default, and the browser starting
+          // its own drag cancels the pointer stream this carousel runs on — so
+          // over a card, which is the whole surface, dragging would do nothing at
+          // all. Refusing the gesture here leaves the pointer events intact.
+          onDragStart={(event) => event.preventDefault()}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+        >
+          {galleryCards.map((card, position) => (
+            <Link
+              key={card.slug}
+              to={card.href}
+              data-slug={card.slug}
+              className={`gallery-card${
+                card.slug === openCard ? ' is-open' : ''
+              }`}
               draggable="false"
-            />
+            >
+              <img
+                className="gallery-card__photo"
+                src={card.src}
+                srcSet={card.srcSet}
+                sizes="(min-width: 1440px) 380px, (min-width: 1024px) 340px, (min-width: 768px) 300px, 78vw"
+                alt={card.alt}
+                width="750"
+                height="1000"
+                // The first two are the ones on screen before anything is
+                // scrolled; the rest wait until they are approached.
+                loading={position < 2 ? 'eager' : 'lazy'}
+                decoding="async"
+                draggable="false"
+              />
 
-            <div className="gallery-card__scrim" aria-hidden="true" />
+              <div className="gallery-card__scrim" aria-hidden="true" />
 
-            <div className="gallery-card__caption">
-              <span className="gallery-card__title">{card.title}</span>
-              <span className="gallery-card__cta">Ver más</span>
-            </div>
-          </Link>
-        ))}
+              <div className="gallery-card__caption">
+                <span className="gallery-card__title">{card.title}</span>
+                <span className="gallery-card__cta">Ver más</span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* The phone's substitute for the arrows: a nudge that the row moves, and

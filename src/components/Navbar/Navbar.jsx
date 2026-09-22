@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { menus } from './navigation.jsx'
 import Signature from '../Signature/Signature.jsx'
+import ThemeToggle from '../ThemeToggle/ThemeToggle.jsx'
 import './Navbar.scss'
 
 // Scroll distances that drive the bar's two behaviours.
@@ -222,17 +223,25 @@ function Navbar() {
             ))}
           </nav>
 
-          <button
-            type="button"
-            className="navbar__burger"
-            aria-expanded={mobileOpen}
-            aria-controls="nav-mobile"
-            onClick={() => setMobileOpen((open) => !open)}
-          >
-            <span className="navbar__stroke" aria-hidden="true" />
-            <span className="navbar__stroke" aria-hidden="true" />
-            <span className="sr-only">Abrir menú</span>
-          </button>
+          {/* Grouped so both sit at the right-hand end. The burger is the
+              phone's control and disappears on a desktop; the toggle stays at
+              every width, which is why it is last — the corner is its place
+              whether or not there is a burger beside it. */}
+          <div className="navbar__actions">
+            <ThemeToggle className="navbar__theme" />
+
+            <button
+              type="button"
+              className="navbar__burger"
+              aria-expanded={mobileOpen}
+              aria-controls="nav-mobile"
+              onClick={() => setMobileOpen((open) => !open)}
+            >
+              <span className="navbar__stroke" aria-hidden="true" />
+              <span className="navbar__stroke" aria-hidden="true" />
+              <span className="sr-only">Abrir menú</span>
+            </button>
+          </div>
         </div>
 
         {/* Inside the header on purpose: as a sibling it would sit outside the

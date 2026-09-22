@@ -194,23 +194,33 @@ function HeroCarousel({ slides }) {
         </Button>
       </div>
 
-      <button
-        type="button"
-        className="hero__arrow hero__arrow--prev"
-        aria-label="Imagen anterior"
-        onClick={() => go(index - 1)}
-      >
-        <Chevron direction="prev" />
-      </button>
+      {/* Gone at the ends rather than dimmed: an arrow that is visible still
+          says there is another photograph that way.
 
-      <button
-        type="button"
-        className="hero__arrow hero__arrow--next"
-        aria-label="Imagen siguiente"
-        onClick={() => go(index + 1)}
-      >
-        <Chevron direction="next" />
-      </button>
+          Note that this makes the arrows the only part of the carousel that
+          stops at the ends — a swipe and the automatic advance both still come
+          round to the first slide. */}
+      {index > 0 && (
+        <button
+          type="button"
+          className="hero__arrow hero__arrow--prev"
+          aria-label="Imagen anterior"
+          onClick={() => go(index - 1)}
+        >
+          <Chevron direction="prev" />
+        </button>
+      )}
+
+      {index < count - 1 && (
+        <button
+          type="button"
+          className="hero__arrow hero__arrow--next"
+          aria-label="Imagen siguiente"
+          onClick={() => go(index + 1)}
+        >
+          <Chevron direction="next" />
+        </button>
+      )}
 
       <div className="hero__controls">
         <div className="hero__bars">

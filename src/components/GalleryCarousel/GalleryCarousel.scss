@@ -50,36 +50,42 @@
     margin: 0;
   }
 
-  &__arrows {
-    display: none;
-    // Enough of a gap that the two glyphs read as separate targets rather than
-    // one wide control.
-    gap: 4px;
-
-    // Swiping carries navigation on a phone, where a 44px target beside the
-    // heading would also be competing for a narrow line.
-    @media (min-width: v.$bp-sm) {
-      display: flex;
-    }
+  // The row of cards, and the frame the arrows are pinned to. Position lives
+  // here rather than on the track because the track scrolls: an arrow inside it
+  // would slide away with the cards.
+  &__viewport {
+    position: relative;
   }
 
-  // Bare glyph, no plate and no filled circle — the same treatment as the
-  // hero's arrows, so the two read as one family. A 44px transparent hit area
-  // around a 22px mark keeps the target finger-sized while the mark stays small.
+  // Over the photographs at either edge, the way the hero's are, rather than
+  // out on the heading's line. Nothing is drawn behind them — no plate, no
+  // disc — so the picture reads through and only the glyph is added to it.
+  //
+  // They stay out of the way until the row is pointed at. On a touch screen
+  // they are not there at all: swiping is the gesture, and hover is a state a
+  // finger enters and cannot leave.
   &__arrow {
-    display: flex;
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: none;
     align-items: center;
     justify-content: center;
+    // A 44px target around a 22px mark.
     width: 44px;
     height: 44px;
     padding: 0;
-    color: var(--color-heading);
+    color: var(--color-overlay-ink);
     cursor: pointer;
     background: transparent;
     border: 0;
-    opacity: 0.75;
+    // The photographs behind these are whatever they are, and a bare white
+    // glyph can land on a white sky. The shadow is what carries it.
+    filter: drop-shadow(0 2px 6px rgb(0 0 0 / 55%));
+    opacity: 0;
+    transform: translateY(-50%);
     transition:
-      opacity 0.25s,
+      opacity 0.3s,
       translate 0.25s;
 
     svg {
@@ -87,23 +93,38 @@
       height: 22px;
     }
 
-    &:hover:not(:disabled) {
-      opacity: 1;
+    @media (hover: hover) and (min-width: v.$bp-sm) {
+      display: flex;
     }
+  }
 
-    // Inert at the ends, and visibly so. Not display: none — an arrow that
-    // vanished would shift the other one along the line every time the row
-    // reached an end.
-    &:disabled {
-      cursor: default;
-      opacity: 0.25;
-    }
+  // Shown when the row is pointed at, and whenever one has keyboard focus —
+  // otherwise tabbing to an arrow would move something the visitor cannot see.
+  &:hover &__arrow,
+  &__arrow:focus-visible {
+    opacity: 0.85;
+  }
 
-    &:first-child:hover:not(:disabled) {
+  &__arrow:hover {
+    opacity: 1;
+  }
+
+  // Inset by the same gutter the first card starts on, so they sit over the
+  // cards rather than in the margin beside them.
+  &__arrow--prev {
+    left: var(--gallery-gutter);
+
+    &:hover {
       translate: -3px 0;
     }
+  }
 
-    &:last-child:hover:not(:disabled) {
+  // The row runs off this edge, so the arrow sits in from it by a fixed amount
+  // rather than by the gutter, which does not exist on this side.
+  &__arrow--next {
+    right: 20px;
+
+    &:hover {
       translate: 3px 0;
     }
   }
@@ -172,6 +193,11 @@
   overflow: hidden;
   text-decoration: none;
   scroll-snap-align: start;
+  // Separates the tile from the ground. The heading colour at low alpha, so it
+  // is a soft dark shadow on paper and a soft light glow on black — a dark
+  // photograph on a dark page has no edge of its own otherwise.
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow 0.4s;
   // The browser's own stylesheet gives every anchor `cursor: pointer`, and that
   // beats anything inherited — so without this the grab and grabbing cursors
   // would show on the gaps between cards and nowhere else, which is precisely
@@ -223,7 +249,8 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     // Like the hero, the type here sits on a photograph — so it takes the
     // overlay ink, which is light whatever the page's own ground happens to be.
     color: var(--color-overlay-ink);
@@ -297,6 +324,8 @@
 
     &:hover,
     &:focus-visible {
+      box-shadow: var(--shadow-lift);
+
       .gallery-card__photo {
         scale: 1.03;
       }
@@ -431,6 +460,7 @@
 // pointed at. The scroll behaviour is handled in the component, which asks the
 // browser to jump rather than glide when the same preference is set.
 @media (prefers-reduced-motion: reduce) {
+  .gallery-card,
   .gallery-card__photo,
   .gallery-card__scrim,
   .gallery-card__caption,

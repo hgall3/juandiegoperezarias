@@ -1,46 +1,76 @@
 // Design tokens as CSS custom properties rather than Sass variables. Sass
 // variables are resolved at build time and are gone before the page runs, so
 // nothing could ever swap them; custom properties can be swapped at runtime,
-// which is what a manual light/dark toggle would do.
+// which is exactly what the two sets below do.
 //
-// The site does NOT follow the visitor's OS appearance setting. There is one set
-// of values here and everyone gets it, whatever their device or the time of day.
-// Do not add a `prefers-color-scheme` block: an explicit choice by the visitor is
-// the only thing that should ever change the theme.
+// The site has a light mode and a dark mode. Which one a visitor gets is
+// decided by the boot script in index.html, before the first paint, in this
+// order:
 //
-// This file EMITS CSS, so it must be used exactly once: only main.scss pulls it in.
-// Component .scss files never need it — custom properties resolve at runtime and
-// are globally available, so `var(--color-border)` just works anywhere.
+//   1. their own choice, made with the navbar's toggle and remembered;
+//   2. the browser or system setting, which outranks the clock;
+//   3. the hour, used only where the browser states no preference at all.
+//
+// That script sets data-theme on <html>, and everything here follows from it.
+// There is no `prefers-color-scheme` block: the browser's setting is read once,
+// in JavaScript, so that the visitor's own choice can outrank it. A media query
+// would win arguments the toggle is supposed to win.
+//
+// This file EMITS CSS, so it must be used exactly once: only main.scss pulls it
+// in. Component .scss files never need it — custom properties resolve at
+// runtime and are globally available, so `var(--color-border)` just works.
 
-// Currently set dark: the whole site is black-ground, light-ink. There is still
-// exactly one set of values and no media query — the page simply has different
-// ones than it used to. Flipping back is this block and nothing else, which is
-// the entire reason the colours live here as custom properties.
+// ---- Light, and the fallback if the script never runs -----------------------
+
 :root {
-  --color-text: #a8a1b0;
-  --color-heading: #fff;
-  --color-bg: #000;
-  // Grey at low alpha, so it reads against either ground without changing.
-  --color-border: rgba(128, 128, 128, 0.3);
+  --color-text: #6b6375;
+  --color-heading: #08060d;
+  --color-bg: #fff;
 
   // The one colour on an otherwise black-and-white site: a muted red for the
   // headings inside the navbar panels. Desaturated on purpose — it should read
   // as a warm accent, not as a signal.
-  //
-  // Lifted for the dark ground. The same hue at the light theme's #8f4a45 goes
-  // muddy on black; this is that colour brought up in lightness, not a new one.
+  --color-accent: #8f4a45;
+
+  color-scheme: light;
+}
+
+// ---- Dark -------------------------------------------------------------------
+
+:root[data-theme='dark'] {
+  --color-text: #a8a1b0;
+  --color-heading: #fff;
+  --color-bg: #000;
+
+  // The same hue as the light mode's #8f4a45, raised in lightness. At the
+  // original value it goes muddy against black.
   --color-accent: #c08079;
 
-  // The full-screen mobile menu's ground and ink. Deliberately their own tokens
-  // rather than --color-heading and --color-bg used back to front: the menu is
-  // meant to be black whatever the rest of the site is doing, and swapping the
-  // page's two tokens would quietly flip it to white if a light/dark toggle were
-  // ever added.
+  color-scheme: dark;
+}
+
+// ---- Shared by both ---------------------------------------------------------
+
+:root {
+  // Grey at low alpha, so one value reads against either ground. Anything that
+  // needs more presence than this mixes the heading colour instead, which
+  // inverts with the mode.
+  --color-border: rgba(128, 128, 128, 0.3);
+
+  // The full-screen mobile menu's ground and ink, and the colour of any type
+  // that sits on a photograph. Deliberately their own tokens rather than
+  // --color-bg and --color-heading used back to front: they must stay black and
+  // white in BOTH modes. A caption over a photograph that took --color-bg would
+  // read as white in light mode and then turn black in dark mode, which is
+  // exactly the bug this pair exists to prevent.
   --color-overlay: #08060d;
   --color-overlay-ink: #fff;
 
-  // A single value, not `light dark`: the pair invites the browser to follow the
-  // OS for scrollbars and form controls, which is the same automatic behaviour
-  // by another route. It names the ground above, so it moves with it.
-  color-scheme: dark;
+  // Lifts a surface off what is behind it. The heading colour at low alpha, so
+  // it is a soft dark shadow on paper and a soft light glow on black without
+  // either being written out.
+  --shadow-soft: 0 10px 30px
+    color-mix(in srgb, var(--color-heading) 12%, transparent);
+  --shadow-lift: 0 14px 38px
+    color-mix(in srgb, var(--color-heading) 16%, transparent);
 }

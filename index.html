@@ -9,6 +9,48 @@
       content="Fotógrafo, documentalista y escritor ecuatoriano. Recorre el país fotografiando lugares remotos e historias olvidadas. Conoce sus libros y documentales."
     />
     <title>Juan Diego Perez Arias | Fotógrafo, documentalista y escritor</title>
+
+    <!--
+      Picks the theme before anything is painted, so the page never shows one
+      mode and then blinks into the other. It has to be inline and here, ahead
+      of the stylesheet: a module script is deferred, and React has not mounted
+      yet either.
+
+      The order is the visitor's own choice first, then the browser's setting,
+      then the hour. The browser outranks the clock deliberately; the clock only
+      speaks when the browser says nothing, which modern browsers rarely do.
+
+      React reads whatever this sets rather than deciding again, so the two
+      cannot disagree.
+    -->
+    <script>
+      (function () {
+        var stored = null
+
+        try {
+          stored = localStorage.getItem('theme')
+        } catch (error) {
+          // Private windows and blocked storage both throw. Not knowing the
+          // visitor's last choice is survivable; failing to set a theme is not.
+        }
+
+        var theme
+
+        if (stored === 'dark' || stored === 'light') {
+          theme = stored
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'dark'
+        } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+          theme = 'light'
+        } else {
+          // Neither query matched, so the browser holds no opinion at all.
+          var hour = new Date().getHours()
+          theme = hour >= 19 || hour < 7 ? 'dark' : 'light'
+        }
+
+        document.documentElement.dataset.theme = theme
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
