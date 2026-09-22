@@ -395,6 +395,15 @@
   // so the desktop's button is restored inside the breakpoint below rather than
   // the phone's version hanging off a max-width.
   &__cta {
+    // Both transparent, so the entry never changes appearance. `background:
+    // none` alone is not enough: Button paints var(--button-bg-hover) from a
+    // `.button:hover` rule, which outranks a plain class, and on a touch screen
+    // hover is a state a tap enters and does not leave. That left the invisible
+    // link washing the whole entry in near-black on tap and keeping it there.
+    --button-bg: transparent;
+    --button-bg-hover: transparent;
+    --button-fg: var(--books-fg);
+
     position: absolute;
     inset: 0;
     // Above the cover and the words, both of which are static, so the tap lands
