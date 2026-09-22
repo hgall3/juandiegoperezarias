@@ -9,16 +9,26 @@
     padding: 96px 0;
   }
 
-  // The same interval between any two blocks in the column, whether that is one
-  // band after another or the gallery after a band. Written as a sibling rule
-  // rather than a margin on the blocks themselves so the first one never opens
-  // the section with a gap above it.
+  // Written as sibling rules rather than margins on the blocks themselves, so
+  // the first block never opens the section with a gap above it.
   .feature + .feature,
   .feature + .gallery {
     margin-top: 72px;
 
     @media (min-width: v.$bp-md) {
       margin-top: 112px;
+    }
+  }
+
+  // More than that between the bands and the gallery, on a desktop. The
+  // interval above is right for two blocks of the same kind, but the band's
+  // photograph is vertically centred against a shorter column of words, so its
+  // real bottom edge sits well below where the band appears to end — and the
+  // gap reads tighter than it measures. The change is desktop-only because the
+  // band stacks on a phone, where that mismatch does not arise.
+  @media (min-width: v.$bp-md) {
+    .feature + .gallery {
+      margin-top: 160px;
     }
   }
 }
